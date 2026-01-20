@@ -1,0 +1,250 @@
+import type { Config } from "tailwindcss";
+
+const config = {
+  darkMode: ["class"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  prefix: "",
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "#0A6847",
+          foreground: "#FFFFFF",
+          50: "#E8F5F0",
+          100: "#D1EBE2",
+          200: "#A3D7C5",
+          300: "#75C3A8",
+          400: "#47AF8B",
+          500: "#0A6847",
+          600: "#08533A",
+          700: "#063E2C",
+          800: "#04291D",
+          900: "#02150F",
+        },
+        secondary: {
+          DEFAULT: "#F5F7F9",
+          foreground: "#111827",
+        },
+        accent: {
+          DEFAULT: "#1E88E5",
+          foreground: "#FFFFFF",
+          50: "#E3F2FD",
+          100: "#BBDEFB",
+          200: "#90CAF9",
+          300: "#64B5F6",
+          400: "#42A5F5",
+          500: "#1E88E5",
+          600: "#1976D2",
+          700: "#1565C0",
+          800: "#0D47A1",
+          900: "#0A3A7D",
+        },
+        destructive: {
+          DEFAULT: "#EF4444",
+          foreground: "#FFFFFF",
+        },
+        success: {
+          DEFAULT: "#10B981",
+          foreground: "#FFFFFF",
+        },
+        warning: {
+          DEFAULT: "#F59E0B",
+          foreground: "#FFFFFF",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        // Premium palette additions
+        sage: {
+          50: "#F6F7F6",
+          100: "#E3E7E4",
+          200: "#C7D0C9",
+          300: "#A4B3A7",
+          400: "#7E9382",
+          500: "#617765",
+          600: "#4D5F51",
+          700: "#404D43",
+          800: "#364039",
+          900: "#2F3631",
+        },
+        cream: {
+          50: "#FDFCFB",
+          100: "#FAF7F5",
+          200: "#F5EFE9",
+          300: "#EDE4DA",
+          400: "#E2D5C7",
+          500: "#D4C4B0",
+          600: "#BDA68A",
+          700: "#A08665",
+          800: "#7D6850",
+          900: "#5C4D3D",
+        },
+        slate: {
+          750: "#293548",
+          850: "#172033",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+        "2xl": "1rem",
+        "3xl": "1.5rem",
+        "4xl": "2rem",
+      },
+      fontFamily: {
+        body: ["var(--font-body)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
+      },
+      fontSize: {
+        "2xs": ["0.625rem", { lineHeight: "0.875rem" }],
+        "display-xl": ["4.5rem", { lineHeight: "1", letterSpacing: "-0.02em" }],
+        "display-lg": ["3.75rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
+        "display-md": ["3rem", { lineHeight: "1.1", letterSpacing: "-0.01em" }],
+        "display-sm": ["2.25rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
+      },
+      spacing: {
+        "18": "4.5rem",
+        "88": "22rem",
+        "112": "28rem",
+        "128": "32rem",
+      },
+      boxShadow: {
+        "soft-sm": "0 2px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 12px -4px rgba(0, 0, 0, 0.05)",
+        "soft": "0 4px 16px -4px rgba(0, 0, 0, 0.08), 0 8px 32px -8px rgba(0, 0, 0, 0.08)",
+        "soft-lg": "0 8px 32px -8px rgba(0, 0, 0, 0.1), 0 16px 64px -16px rgba(0, 0, 0, 0.1)",
+        "soft-xl": "0 16px 48px -12px rgba(0, 0, 0, 0.12), 0 32px 80px -24px rgba(0, 0, 0, 0.12)",
+        "inner-soft": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.04)",
+        "glow-primary": "0 0 40px -10px rgba(10, 104, 71, 0.4)",
+        "glow-accent": "0 0 40px -10px rgba(30, 136, 229, 0.4)",
+        "card": "0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 16px rgba(0, 0, 0, 0.04)",
+        "card-hover": "0 4px 12px rgba(0, 0, 0, 0.06), 0 12px 28px rgba(0, 0, 0, 0.08)",
+        "elevated": "0 12px 40px -12px rgba(0, 0, 0, 0.15)",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-mesh": "radial-gradient(at 40% 20%, hsla(152, 82%, 22%, 0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(210, 79%, 51%, 0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(152, 82%, 35%, 0.1) 0px, transparent 50%)",
+        "gradient-mesh-dark": "radial-gradient(at 40% 20%, hsla(152, 82%, 22%, 0.25) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(210, 79%, 51%, 0.15) 0px, transparent 50%)",
+        "noise": "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
+        "dots": "radial-gradient(circle, currentColor 1px, transparent 1px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "fade-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        "fade-up": {
+          from: { opacity: "0", transform: "translateY(20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-down": {
+          from: { opacity: "0", transform: "translateY(-20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-in-right": {
+          from: { opacity: "0", transform: "translateX(20px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        "slide-in-left": {
+          from: { opacity: "0", transform: "translateX(-20px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        "scale-in": {
+          from: { opacity: "0", transform: "scale(0.95)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "pulse-soft": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.7" },
+        },
+        "shimmer": {
+          from: { backgroundPosition: "200% 0" },
+          to: { backgroundPosition: "-200% 0" },
+        },
+        "spin-slow": {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
+        },
+        "bounce-soft": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
+        "gradient-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        "border-beam": {
+          "100%": { offsetDistance: "100%" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.5s ease-out",
+        "fade-up": "fade-up 0.5s ease-out",
+        "fade-up-delay-1": "fade-up 0.5s ease-out 0.1s both",
+        "fade-up-delay-2": "fade-up 0.5s ease-out 0.2s both",
+        "fade-up-delay-3": "fade-up 0.5s ease-out 0.3s both",
+        "fade-up-delay-4": "fade-up 0.5s ease-out 0.4s both",
+        "fade-down": "fade-down 0.5s ease-out",
+        "slide-in-right": "slide-in-right 0.4s ease-out",
+        "slide-in-left": "slide-in-left 0.4s ease-out",
+        "scale-in": "scale-in 0.3s ease-out",
+        "float": "float 6s ease-in-out infinite",
+        "pulse-soft": "pulse-soft 3s ease-in-out infinite",
+        "shimmer": "shimmer 2s linear infinite",
+        "spin-slow": "spin-slow 8s linear infinite",
+        "bounce-soft": "bounce-soft 2s ease-in-out infinite",
+        "gradient-shift": "gradient-shift 8s ease infinite",
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+      },
+      transitionTimingFunction: {
+        "bounce-in": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "smooth": "cubic-bezier(0.4, 0, 0.2, 1)",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config;
+
+export default config;
