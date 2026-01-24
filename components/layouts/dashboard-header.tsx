@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Bell, Search, Moon, Sun, Command, Sparkles } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ title, description, actions }: DashboardHeaderProps) {
-  const { data: session } = useSession();
+  const { session } = useAuth();
   const { theme, setTheme } = useTheme();
   const [notifications] = useState([
     {

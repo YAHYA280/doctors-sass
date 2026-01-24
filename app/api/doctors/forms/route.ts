@@ -5,20 +5,21 @@ import { IS_MOCK_MODE, MOCK_FORM_TEMPLATES } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
+    // Return mock data if in mock mode (bypass session check)
+    if (IS_MOCK_MODE) {
+      return NextResponse.json({
+        success: true,
+        data: MOCK_FORM_TEMPLATES,
+      });
+    }
+
+    // Real mode - check session
     const session = await getServerSession(authOptions);
     if (!session || !session.user.doctorId) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 403 }
       );
-    }
-
-    // Return mock data if in mock mode
-    if (IS_MOCK_MODE) {
-      return NextResponse.json({
-        success: true,
-        data: MOCK_FORM_TEMPLATES,
-      });
     }
 
     // Real database logic

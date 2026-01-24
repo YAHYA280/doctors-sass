@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/components/providers/auth-provider";
 import { toast } from "sonner";
 import {
   FileText,
@@ -53,7 +53,7 @@ interface FormTemplate {
 }
 
 export default function FormsPage() {
-  const { data: session } = useSession();
+  const { session } = useAuth();
   const [forms, setForms] = useState<FormTemplate[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedForm, setSelectedForm] = useState<FormTemplate | null>(null);

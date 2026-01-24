@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useAuth } from "@/components/providers/auth-provider";
+import { IS_MOCK_MODE } from "@/lib/mock-data";
 import {
   LayoutDashboard,
   Calendar,
@@ -73,7 +74,7 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ variant }: DashboardSidebarProps) {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { session } = useAuth();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -297,7 +298,15 @@ export function DashboardSidebar({ variant }: DashboardSidebarProps) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => signOut({ callbackUrl: "/" })}
+                  onClick={() => {
+                    if (IS_MOCK_MODE) {
+                      window.location.href = "/";
+                    } else {
+                      import("next-auth/react").then(({ signOut }) => {
+                        signOut({ callbackUrl: "/" });
+                      });
+                    }
+                  }}
                   className="rounded-lg cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
                 >
                   <LogOut className="mr-2 h-4 w-4" />

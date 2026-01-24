@@ -5,6 +5,12 @@ import { IS_MOCK_MODE, MOCK_ANALYTICS } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
+    // Return mock data if in mock mode (bypass session check)
+    if (IS_MOCK_MODE) {
+      return NextResponse.json({ success: true, data: MOCK_ANALYTICS });
+    }
+
+    // Real mode - check session
     const session = await getServerSession(authOptions);
 
     if (!session?.user) {
@@ -14,11 +20,6 @@ export async function GET(request: NextRequest) {
     const doctorId = (session.user as any).doctorId;
     if (!doctorId) {
       return NextResponse.json({ success: false, error: "Doctor not found" }, { status: 404 });
-    }
-
-    // Return mock data if in mock mode
-    if (IS_MOCK_MODE) {
-      return NextResponse.json({ success: true, data: MOCK_ANALYTICS });
     }
 
     // Real database logic

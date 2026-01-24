@@ -5,15 +5,7 @@ import { IS_MOCK_MODE, MOCK_DOCTOR } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user.doctorId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 403 }
-      );
-    }
-
-    // Return mock data if in mock mode
+    // In mock mode, bypass session check and return mock data directly
     if (IS_MOCK_MODE) {
       const now = new Date();
       const trialEnd = new Date(MOCK_DOCTOR.trialEndsAt);
@@ -25,6 +17,7 @@ export async function GET(request: NextRequest) {
         data: {
           ...MOCK_DOCTOR,
           daysRemaining,
+          patientCountThisMonth: 45,
           user: {
             email: MOCK_DOCTOR.email,
             createdAt: MOCK_DOCTOR.createdAt,
@@ -42,6 +35,14 @@ export async function GET(request: NextRequest) {
           },
         },
       });
+    }
+
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user.doctorId) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
     }
 
     // Real database logic
@@ -96,6 +97,19 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    // Mock mode - just return the updated data
+    if (IS_MOCK_MODE) {
+      const body = await request.json();
+      return NextResponse.json({
+        success: true,
+        data: {
+          ...MOCK_DOCTOR,
+          ...body,
+          updatedAt: new Date().toISOString(),
+        },
+      });
+    }
+
     const session = await getServerSession(authOptions);
     if (!session || !session.user.doctorId) {
       return NextResponse.json(
@@ -105,18 +119,6 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json();
-
-    // Mock mode - just return the updated data
-    if (IS_MOCK_MODE) {
-      return NextResponse.json({
-        success: true,
-        data: {
-          ...MOCK_DOCTOR,
-          ...body,
-          updatedAt: new Date(),
-        },
-      });
-    }
 
     // Real database logic
     const { db } = await import("@/lib/db");

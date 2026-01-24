@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/components/providers/auth-provider";
 import {
   Calendar,
   Users,
@@ -49,7 +49,7 @@ interface Appointment {
 }
 
 export default function DoctorDashboard() {
-  const { data: session } = useSession();
+  const { session } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentAppointments, setRecentAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);

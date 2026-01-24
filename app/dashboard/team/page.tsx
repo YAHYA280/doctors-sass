@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/components/providers/auth-provider";
 import { toast } from "sonner";
 import {
   Users,
@@ -71,7 +71,7 @@ interface TeamMember {
 }
 
 export default function TeamPage() {
-  const { data: session } = useSession();
+  const { session } = useAuth();
   const [loading, setLoading] = useState(true);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [showInviteDialog, setShowInviteDialog] = useState(false);

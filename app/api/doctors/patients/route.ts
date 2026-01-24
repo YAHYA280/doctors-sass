@@ -5,20 +5,12 @@ import { IS_MOCK_MODE, MOCK_PATIENTS } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user.doctorId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 403 }
-      );
-    }
-
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
     const search = searchParams.get("search") || "";
 
-    // Return mock data if in mock mode
+    // Return mock data if in mock mode (bypass session check)
     if (IS_MOCK_MODE) {
       let filteredPatients = [...MOCK_PATIENTS];
 
@@ -51,6 +43,15 @@ export async function GET(request: NextRequest) {
           totalPages: Math.ceil(total / limit),
         },
       });
+    }
+
+    // Real mode - check session
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user.doctorId) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
     }
 
     // Real database logic

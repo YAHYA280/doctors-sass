@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/components/providers/auth-provider";
 import {
   Calendar,
   Users,
@@ -141,7 +141,7 @@ const testimonials = [
 ];
 
 export default function HomePage() {
-  const { data: session } = useSession();
+  const { session } = useAuth();
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">

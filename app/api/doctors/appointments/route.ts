@@ -5,14 +5,6 @@ import { IS_MOCK_MODE, MOCK_APPOINTMENTS } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user.doctorId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 403 }
-      );
-    }
-
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     const startDate = searchParams.get("startDate");
@@ -20,7 +12,7 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
 
-    // Return mock data if in mock mode
+    // Return mock data if in mock mode (bypass session check)
     if (IS_MOCK_MODE) {
       let filteredAppointments = [...MOCK_APPOINTMENTS];
 
@@ -80,6 +72,15 @@ export async function GET(request: NextRequest) {
           totalPages: Math.ceil(total / limit),
         },
       });
+    }
+
+    // Real mode - check session
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user.doctorId) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
     }
 
     // Real database logic
@@ -158,14 +159,6 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user.doctorId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 403 }
-      );
-    }
-
     const body = await request.json();
     const { appointmentId, ...updateData } = body;
 
@@ -176,7 +169,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    // Mock mode - just return success
+    // Mock mode - bypass session check and return success
     if (IS_MOCK_MODE) {
       const appointment = MOCK_APPOINTMENTS.find(a => a.id === appointmentId);
       if (!appointment) {
@@ -194,6 +187,15 @@ export async function PATCH(request: NextRequest) {
           updatedAt: new Date(),
         },
       });
+    }
+
+    // Real mode - check session
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user.doctorId) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
     }
 
     // Real database logic
@@ -293,30 +295,31 @@ export async function PATCH(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user.doctorId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 403 }
-      );
-    }
-
     const body = await request.json();
 
-    // Mock mode
+    // Mock mode - bypass session check
     if (IS_MOCK_MODE) {
       const newAppointment = {
         id: `apt-${Date.now()}`,
-        doctorId: session.user.doctorId,
+        doctorId: "doc-001",
         ...body,
         status: "confirmed",
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
       };
 
       return NextResponse.json({
         success: true,
         data: newAppointment,
       });
+    }
+
+    // Real mode - check session
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user.doctorId) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
     }
 
     // Real database logic

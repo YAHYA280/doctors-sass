@@ -7,6 +7,12 @@ import { SUBSCRIPTION_PLANS } from "@/constants/plans";
 // GET - Fetch team members
 export async function GET(request: NextRequest) {
   try {
+    // Return mock data if in mock mode (bypass session check)
+    if (IS_MOCK_MODE) {
+      return NextResponse.json({ success: true, data: MOCK_TEAM_MEMBERS });
+    }
+
+    // Real mode - check session
     const session = await getServerSession(authOptions);
 
     if (!session?.user) {
@@ -16,11 +22,6 @@ export async function GET(request: NextRequest) {
     const doctorId = (session.user as any).doctorId;
     if (!doctorId) {
       return NextResponse.json({ success: false, error: "Doctor not found" }, { status: 404 });
-    }
-
-    // Return mock data if in mock mode
-    if (IS_MOCK_MODE) {
-      return NextResponse.json({ success: true, data: MOCK_TEAM_MEMBERS });
     }
 
     // Real database logic

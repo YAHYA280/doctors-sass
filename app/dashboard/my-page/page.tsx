@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/components/providers/auth-provider";
 import { toast } from "sonner";
 import {
   Link2,
@@ -28,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function MyPagePage() {
-  const { data: session } = useSession();
+  const { session } = useAuth();
   const [loading, setLoading] = useState(true);
   const [doctorData, setDoctorData] = useState<any>(null);
   const [copied, setCopied] = useState(false);

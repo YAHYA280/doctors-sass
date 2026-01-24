@@ -5,15 +5,7 @@ import { IS_MOCK_MODE, MOCK_AVAILABILITY, MOCK_BLOCKED_SLOTS } from "@/lib/mock-
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user.doctorId) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 403 }
-      );
-    }
-
-    // Return mock data if in mock mode
+    // Return mock data if in mock mode (bypass session check)
     if (IS_MOCK_MODE) {
       return NextResponse.json({
         success: true,
@@ -22,6 +14,15 @@ export async function GET(request: NextRequest) {
           blockedSlots: MOCK_BLOCKED_SLOTS,
         },
       });
+    }
+
+    // Real mode - check session
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user.doctorId) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
     }
 
     // Real database logic
