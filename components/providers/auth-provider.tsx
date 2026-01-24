@@ -12,6 +12,7 @@ interface UnifiedUser {
   doctorId?: string;
   doctorSlug?: string;
   subscriptionPlan?: string;
+  image?: string;
 }
 
 interface UnifiedSession {
@@ -80,6 +81,7 @@ function RealAuthContextProvider({ children }: AuthProviderProps) {
           doctorId: session.user?.doctorId as string | undefined,
           doctorSlug: session.user?.doctorSlug as string | undefined,
           subscriptionPlan: session.user?.subscriptionPlan as string | undefined,
+          image: session.user?.image as string | undefined,
         },
         expires: session.expires,
       }
