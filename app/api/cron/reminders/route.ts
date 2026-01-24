@@ -1,16 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { appointments, patients, doctors } from "@/lib/db/schema";
-import { eq, and, sql, gte, lte } from "drizzle-orm";
-import { sendAppointmentReminder } from "@/services/whatsapp";
-import { sendAppointmentReminderEmail } from "@/services/email";
+import { IS_MOCK_MODE } from "@/lib/mock-data";
 import { formatDate, formatTime } from "@/lib/utils";
 import { canUseWhatsApp } from "@/constants/plans";
 
+// Force dynamic to prevent static generation
+export const dynamic = "force-dynamic";
+
 // This endpoint should be called by a cron service (e.g., Vercel Cron)
-// Schedule: Every hour
+// Schedule: Daily at 8 AM UTC
 export async function GET(request: NextRequest) {
   try {
+    // In mock mode, just return success without doing anything
+    if (IS_MOCK_MODE) {
+      return NextResponse.json({
+        success: true,
+        message: "Mock mode - no reminders sent",
+        sent24Hour: 0,
+        sent1Hour: 0,
+      });
+    }
+
     // Verify cron secret (for security)
     const authHeader = request.headers.get("authorization");
     const cronSecret = process.env.CRON_SECRET;
@@ -21,6 +30,13 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       );
     }
+
+    // Dynamic imports for database and services (only in production mode)
+    const { db } = await import("@/lib/db");
+    const { appointments, patients, doctors } = await import("@/lib/db/schema");
+    const { eq, and, sql, gte, lte } = await import("drizzle-orm");
+    const { sendAppointmentReminder } = await import("@/services/whatsapp");
+    const { sendAppointmentReminderEmail } = await import("@/services/email");
 
     const now = new Date();
     const in24Hours = new Date(now.getTime() + 24 * 60 * 60 * 1000);
