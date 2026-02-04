@@ -1,13 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { doctors, patients, appointments, formSubmissions, formTemplates } from "@/lib/db/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { IS_MOCK_MODE_SERVER, MOCK_DOCTOR } from "@/lib/mock-data";
 import { bookingSchema } from "@/lib/validators";
 import { withRateLimit } from "@/lib/rate-limit";
 import { formatDate, formatTime, addMinutesToTime } from "@/lib/utils";
-import { sendAppointmentConfirmation, sendDoctorBookingAlert } from "@/services/whatsapp";
-import { sendAppointmentConfirmationEmail } from "@/services/email";
-import { triggerSlotBooked, triggerNewAppointment } from "@/services/pusher";
 import { canAddPatient, canUseWhatsApp } from "@/constants/plans";
 import { v4 as uuidv4 } from "uuid";
 
@@ -39,6 +34,38 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Mock mode - return success without database
+    if (IS_MOCK_MODE_SERVER) {
+      if (doctorSlug !== MOCK_DOCTOR.slug) {
+        return NextResponse.json(
+          { success: false, error: "Doctor not found" },
+          { status: 404 }
+        );
+      }
+
+      const appointmentId = `apt-${Date.now()}`;
+      const editToken = uuidv4();
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+      const editLink = `${appUrl}/appointment/manage/${editToken}`;
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          appointmentId,
+          editLink,
+          message: "Appointment booked successfully! You will receive a confirmation shortly.",
+        },
+      });
+    }
+
+    // Real mode - import database modules
+    const { db } = await import("@/lib/db");
+    const { doctors, patients, appointments, formSubmissions, formTemplates } = await import("@/lib/db/schema");
+    const { eq, and, sql } = await import("drizzle-orm");
+    const { sendAppointmentConfirmation, sendDoctorBookingAlert } = await import("@/services/whatsapp");
+    const { sendAppointmentConfirmationEmail } = await import("@/services/email");
+    const { triggerSlotBooked, triggerNewAppointment } = await import("@/services/pusher");
 
     // Get doctor
     const doctor = await db.query.doctors.findFirst({

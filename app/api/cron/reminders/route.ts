@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { IS_MOCK_MODE } from "@/lib/mock-data";
+import { IS_MOCK_MODE_SERVER } from "@/lib/mock-data";
 import { formatDate, formatTime } from "@/lib/utils";
 import { canUseWhatsApp } from "@/constants/plans";
 
@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
   try {
     // In mock mode, just return success without doing anything
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       return NextResponse.json({
         success: true,
         message: "Mock mode - no reminders sent",

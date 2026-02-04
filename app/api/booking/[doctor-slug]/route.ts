@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { doctors, clinics, formTemplates, availability, blockedSlots, appointments } from "@/lib/db/schema";
-import { eq, and, gte, sql } from "drizzle-orm";
+import { IS_MOCK_MODE_SERVER, MOCK_DOCTOR, MOCK_AVAILABILITY, MOCK_FORM_TEMPLATES } from "@/lib/mock-data";
 
 export async function GET(
   request: NextRequest,
@@ -9,6 +7,58 @@ export async function GET(
 ) {
   try {
     const slug = params["doctor-slug"];
+
+    // Mock mode - return mock data
+    if (IS_MOCK_MODE_SERVER) {
+      if (slug !== MOCK_DOCTOR.slug) {
+        return NextResponse.json(
+          { success: false, error: "Doctor not found" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          doctor: {
+            slug: MOCK_DOCTOR.slug,
+            fullName: MOCK_DOCTOR.fullName,
+            specialty: MOCK_DOCTOR.specialty,
+            bio: MOCK_DOCTOR.bio,
+            profileImage: MOCK_DOCTOR.profileImage,
+            clinicName: MOCK_DOCTOR.clinicName,
+            address: MOCK_DOCTOR.address,
+            brandColor: MOCK_DOCTOR.brandColor,
+            welcomeMessage: "Welcome to our practice! We look forward to providing you with excellent care.",
+          },
+          clinics: [{
+            id: "clinic-001",
+            name: MOCK_DOCTOR.clinicName,
+            address: MOCK_DOCTOR.address,
+            phone: MOCK_DOCTOR.phone,
+            workingHours: null,
+          }],
+          form: MOCK_FORM_TEMPLATES[0] ? {
+            id: MOCK_FORM_TEMPLATES[0].id,
+            formName: MOCK_FORM_TEMPLATES[0].name,
+            description: MOCK_FORM_TEMPLATES[0].description,
+            fields: MOCK_FORM_TEMPLATES[0].fields,
+          } : null,
+          availability: MOCK_AVAILABILITY.map(a => ({
+            dayOfWeek: a.dayOfWeek,
+            startTime: a.startTime,
+            endTime: a.endTime,
+            slotDuration: a.slotDuration,
+            clinicId: null,
+          })),
+        },
+      });
+    }
+
+    // Real mode - query database
+    const { db } = await import("@/lib/db");
+    const { doctors, clinics, formTemplates, availability } = await import("@/lib/db/schema");
+    const { eq, and } = await import("drizzle-orm");
 
     // Get doctor public profile
     const doctor = await db.query.doctors.findFirst({

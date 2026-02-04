@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
-import { IS_MOCK_MODE, MOCK_TEAM_MEMBERS } from "@/lib/mock-data";
+import { IS_MOCK_MODE_SERVER, MOCK_TEAM_MEMBERS } from "@/lib/mock-data";
 import { SUBSCRIPTION_PLANS } from "@/constants/plans";
 
 // GET - Fetch team members
 export async function GET(request: NextRequest) {
   try {
     // Return mock data if in mock mode (bypass session check)
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       return NextResponse.json({ success: true, data: MOCK_TEAM_MEMBERS });
     }
 
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Mock mode - return success with new member
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       const newMember = {
         id: `team-${Date.now()}`,
         doctorId,
@@ -224,7 +224,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Mock mode - return success
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       const member = MOCK_TEAM_MEMBERS.find((m) => m.id === memberId);
       if (!member) {
         return NextResponse.json(
@@ -298,7 +298,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Mock mode - return success
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       return NextResponse.json({
         success: true,
         message: "Team member removed successfully",

@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
-import { IS_MOCK_MODE, MOCK_DOCTOR } from "@/lib/mock-data";
+import { IS_MOCK_MODE_SERVER, MOCK_DOCTOR } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
     // In mock mode, bypass session check and return mock data directly
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       const now = new Date();
       const trialEnd = new Date(MOCK_DOCTOR.trialEndsAt);
       const diff = trialEnd.getTime() - now.getTime();
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     // Mock mode - just return the updated data
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       const body = await request.json();
       return NextResponse.json({
         success: true,

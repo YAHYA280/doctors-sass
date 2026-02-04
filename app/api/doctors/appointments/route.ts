@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
-import { IS_MOCK_MODE, MOCK_APPOINTMENTS } from "@/lib/mock-data";
+import { IS_MOCK_MODE_SERVER, MOCK_APPOINTMENTS } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "20");
 
     // Return mock data if in mock mode (bypass session check)
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       let filteredAppointments = [...MOCK_APPOINTMENTS];
 
       // Apply filters
@@ -170,7 +170,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Mock mode - bypass session check and return success
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       const appointment = MOCK_APPOINTMENTS.find(a => a.id === appointmentId);
       if (!appointment) {
         return NextResponse.json(
@@ -298,7 +298,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Mock mode - bypass session check
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       const newAppointment = {
         id: `apt-${Date.now()}`,
         doctorId: "doc-001",

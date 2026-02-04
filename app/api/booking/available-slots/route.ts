@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { doctors, availability, blockedSlots, appointments } from "@/lib/db/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { IS_MOCK_MODE_SERVER, MOCK_DOCTOR, MOCK_AVAILABILITY, MOCK_APPOINTMENTS } from "@/lib/mock-data";
 import { getTimeSlots } from "@/lib/utils";
 
 export async function GET(request: NextRequest) {
@@ -17,6 +15,79 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Mock mode - return mock available slots
+    if (IS_MOCK_MODE_SERVER) {
+      if (doctorSlug !== MOCK_DOCTOR.slug) {
+        return NextResponse.json(
+          { success: false, error: "Doctor not found" },
+          { status: 404 }
+        );
+      }
+
+      // Get day of week (0-6, Sunday-Saturday)
+      const dateObj = new Date(date);
+      const dayOfWeek = dateObj.getDay();
+
+      // Find availability for this day
+      const dayAvailability = MOCK_AVAILABILITY.find(
+        (a) => a.dayOfWeek === dayOfWeek && a.isAvailable
+      );
+
+      if (!dayAvailability) {
+        return NextResponse.json({
+          success: true,
+          data: {
+            date,
+            slots: [],
+            isAvailable: false,
+          },
+        });
+      }
+
+      // Generate all possible time slots
+      const allSlots = getTimeSlots(
+        dayAvailability.startTime,
+        dayAvailability.endTime,
+        dayAvailability.slotDuration || 30
+      );
+
+      // Check which slots are booked in mock data
+      const bookedSlots = MOCK_APPOINTMENTS
+        .filter((apt) => apt.appointmentDate === date && apt.status !== "cancelled")
+        .map((apt) => apt.timeSlot);
+
+      // Check if slot is in the past
+      const now = new Date();
+
+      const availableSlots = allSlots.map((slot) => {
+        const slotDateTime = new Date(`${date}T${slot}`);
+        const isPast = slotDateTime <= now;
+        const isBooked = bookedSlots.includes(slot);
+
+        return {
+          time: slot,
+          isAvailable: !isBooked && !isPast,
+          isBlocked: false,
+          isBooked,
+          isPast,
+        };
+      });
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          date,
+          slots: availableSlots,
+          isAvailable: availableSlots.some((s) => s.isAvailable),
+        },
+      });
+    }
+
+    // Real mode - query database
+    const { db } = await import("@/lib/db");
+    const { doctors, availability, blockedSlots, appointments } = await import("@/lib/db/schema");
+    const { eq, and, sql } = await import("drizzle-orm");
 
     // Get doctor
     const doctor = await db.query.doctors.findFirst({

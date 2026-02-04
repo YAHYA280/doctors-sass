@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
-import { IS_MOCK_MODE, MOCK_ANALYTICS } from "@/lib/mock-data";
+import { IS_MOCK_MODE_SERVER, MOCK_ANALYTICS } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
     // Return mock data if in mock mode (bypass session check)
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       return NextResponse.json({ success: true, data: MOCK_ANALYTICS });
     }
 

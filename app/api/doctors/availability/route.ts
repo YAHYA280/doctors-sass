@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
-import { IS_MOCK_MODE, MOCK_AVAILABILITY, MOCK_BLOCKED_SLOTS } from "@/lib/mock-data";
+import { IS_MOCK_MODE_SERVER, MOCK_AVAILABILITY, MOCK_BLOCKED_SLOTS } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
     // Return mock data if in mock mode (bypass session check)
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       return NextResponse.json({
         success: true,
         data: {
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     const { type } = body;
 
     // Mock mode - return success with mock data
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       if (type === "availability") {
         const newAvailability = {
           id: `av-${Date.now()}`,
@@ -242,7 +242,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Mock mode - return success
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       return NextResponse.json({
         success: true,
         message: "Deleted successfully",

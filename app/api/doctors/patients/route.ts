@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
-import { IS_MOCK_MODE, MOCK_PATIENTS } from "@/lib/mock-data";
+import { IS_MOCK_MODE_SERVER, MOCK_PATIENTS } from "@/lib/mock-data";
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search") || "";
 
     // Return mock data if in mock mode (bypass session check)
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       let filteredPatients = [...MOCK_PATIENTS];
 
       // Apply search filter
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Mock mode - just return success with the new patient
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       const newPatient = {
         id: `patient-${Date.now()}`,
         ...body,
@@ -243,7 +243,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Mock mode - return updated patient
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       const existingPatient = MOCK_PATIENTS.find((p) => p.id === patientId);
       if (!existingPatient) {
         return NextResponse.json(
@@ -334,7 +334,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Mock mode - just return success
-    if (IS_MOCK_MODE) {
+    if (IS_MOCK_MODE_SERVER) {
       return NextResponse.json({
         success: true,
         message: "Patient deleted successfully",
