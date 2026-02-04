@@ -68,7 +68,7 @@ export function DashboardHeader({ title, description, actions }: DashboardHeader
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/50">
+    <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="flex items-center justify-between h-18 px-4 lg:px-8">
         {/* Spacer for mobile menu button */}
         <div className="lg:hidden w-14" />
@@ -151,7 +151,7 @@ export function DashboardHeader({ title, description, actions }: DashboardHeader
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-96 p-0 rounded-2xl overflow-hidden">
               {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 bg-muted/30 border-b border-border/50">
+              <div className="flex items-center justify-between px-5 py-4 bg-muted/30 border-b border-border">
                 <div>
                   <h3 className="font-semibold text-sm">Notifications</h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
@@ -218,7 +218,7 @@ export function DashboardHeader({ title, description, actions }: DashboardHeader
               </ScrollArea>
 
               {/* Footer */}
-              <div className="border-t border-border/50 p-3 bg-muted/30">
+              <div className="border-t border-border p-3 bg-muted/30">
                 <Link href="/dashboard/notifications">
                   <Button
                     variant="ghost"
@@ -233,7 +233,7 @@ export function DashboardHeader({ title, description, actions }: DashboardHeader
 
           {/* Custom Actions */}
           {actions && (
-            <div className="hidden sm:flex items-center gap-2 pl-2 ml-2 border-l border-border/50">
+            <div className="hidden sm:flex items-center gap-2 pl-2 ml-2 border-l border-border">
               {actions}
             </div>
           )}

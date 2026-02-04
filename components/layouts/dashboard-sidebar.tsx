@@ -106,8 +106,8 @@ export function DashboardSidebar({ variant }: DashboardSidebarProps) {
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {
     return (
-      <aside className="fixed top-0 left-0 z-40 h-screen w-72 bg-card border-r border-border/50 lg:block hidden">
-        <div className="h-18 flex items-center gap-3 px-6 py-5 border-b border-border/50">
+      <aside className="fixed top-0 left-0 z-40 h-screen w-72 bg-card border-r border-border lg:block hidden">
+        <div className="h-18 flex items-center gap-3 px-6 py-5 border-b border-border">
           <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
             <Stethoscope className="h-5 w-5 text-white" />
           </div>
@@ -128,7 +128,7 @@ export function DashboardSidebar({ variant }: DashboardSidebarProps) {
       <button
         className={cn(
           "lg:hidden fixed top-4 left-4 z-50 p-2.5 rounded-xl transition-all duration-300",
-          "bg-white/80 backdrop-blur-xl border border-border/50 shadow-soft-sm",
+          "bg-white/80 backdrop-blur-xl border border-border shadow-soft-sm",
           "hover:bg-white hover:shadow-soft active:scale-95"
         )}
         onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -155,7 +155,7 @@ export function DashboardSidebar({ variant }: DashboardSidebarProps) {
         className={cn(
           "fixed top-0 left-0 z-40 h-screen w-72 transition-all duration-300 ease-out lg:translate-x-0",
           "bg-gradient-to-b from-card via-card to-card/95",
-          "border-r border-border/50",
+          "border-r border-border",
           isMobileOpen ? "translate-x-0 shadow-soft-xl" : "-translate-x-full"
         )}
       >
@@ -164,7 +164,7 @@ export function DashboardSidebar({ variant }: DashboardSidebarProps) {
 
         <div className="relative flex flex-col h-full">
           {/* Logo */}
-          <div className="h-18 flex items-center gap-3 px-6 py-5 border-b border-border/50">
+          <div className="h-18 flex items-center gap-3 px-6 py-5 border-b border-border">
             <div className="relative">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-glow-primary/30">
                 <Stethoscope className="h-5 w-5 text-white" />
@@ -256,7 +256,7 @@ export function DashboardSidebar({ variant }: DashboardSidebarProps) {
           </ScrollArea>
 
           {/* User Section */}
-          <div className="p-4 border-t border-border/50 bg-muted/30">
+          <div className="p-4 border-t border-border bg-muted/30">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3 w-full p-2.5 rounded-xl hover:bg-background/80 transition-all duration-200 group">
