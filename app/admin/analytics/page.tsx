@@ -203,7 +203,7 @@ export default function AdminAnalyticsPage() {
         <div className="grid gap-6 md:grid-cols-2">
           {/* Subscription Breakdown */}
           <div className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 flex items-center justify-center">
                   <PieChart className="h-5 w-5 text-violet-600" />
@@ -263,7 +263,7 @@ export default function AdminAnalyticsPage() {
 
           {/* Top Performing Doctors */}
           <div className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 flex items-center justify-center">
                   <Award className="h-5 w-5 text-amber-600" />
@@ -324,7 +324,7 @@ export default function AdminAnalyticsPage() {
 
         {/* Monthly Growth Chart */}
         <div className="card-premium">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-emerald-500/10 flex items-center justify-center">
                 <BarChart3 className="h-5 w-5 text-primary" />

@@ -309,7 +309,7 @@ export default function AdminSupportPage() {
 
         {/* Tickets Table */}
         <div className="card-premium overflow-hidden">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 flex items-center justify-center">
                 <HeadphonesIcon className="h-5 w-5 text-amber-600" />
@@ -421,7 +421,7 @@ export default function AdminSupportPage() {
           </DialogHeader>
           {selectedTicket && (
             <div className="space-y-4">
-              <div className="rounded-xl border border-border/50 bg-muted/30 p-4">
+              <div className="rounded-xl border border-border bg-muted/30 p-4">
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <h4 className="font-semibold">{selectedTicket.subject}</h4>
                   <div className="flex gap-2">
@@ -432,7 +432,7 @@ export default function AdminSupportPage() {
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {selectedTicket.message}
                 </p>
-                <div className="mt-3 pt-3 border-t border-border/50">
+                <div className="mt-3 pt-3 border-t border-border">
                   <p className="text-xs text-muted-foreground">
                     From: <span className="font-medium">{selectedTicket.user.email}</span>
                   </p>

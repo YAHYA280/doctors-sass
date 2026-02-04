@@ -210,7 +210,7 @@ export default function AnalyticsPage() {
         {/* Performance Metrics */}
         <div className="grid gap-6 lg:grid-cols-2">
           <Card className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
                   <BarChart3 className="h-4 w-4 text-primary" />
@@ -247,7 +247,7 @@ export default function AnalyticsPage() {
           </Card>
 
           <Card className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center">
                   <Clock className="h-4 w-4 text-accent" />
@@ -260,13 +260,13 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent className="p-5 space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
+                <div className="p-4 rounded-xl bg-muted/30 border border-border">
                   <p className="text-xs text-muted-foreground mb-1">Busiest Day</p>
                   <p className="font-display text-xl font-bold capitalize">
                     {analytics?.topMetrics.busiestDay || "N/A"}
                   </p>
                 </div>
-                <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
+                <div className="p-4 rounded-xl bg-muted/30 border border-border">
                   <p className="text-xs text-muted-foreground mb-1">Peak Hour</p>
                   <p className="font-display text-xl font-bold">
                     {analytics?.topMetrics.busiestTime || "N/A"}
@@ -302,7 +302,7 @@ export default function AnalyticsPage() {
         {/* Appointment Status Breakdown */}
         {analytics?.trends.appointmentsByStatus && analytics.trends.appointmentsByStatus.length > 0 && (
           <Card className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-lg bg-success/10 flex items-center justify-center">
                   <Activity className="h-4 w-4 text-success" />
@@ -329,7 +329,7 @@ export default function AnalyticsPage() {
                       key={item.status}
                       className={cn(
                         "p-5 rounded-xl bg-gradient-to-br border transition-all duration-300 hover:-translate-y-1",
-                        statusColors[item.status] || "from-muted/50 to-muted/30 border-border/50"
+                        statusColors[item.status] || "from-muted/50 to-muted/30 border-border"
                       )}
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
@@ -346,7 +346,7 @@ export default function AnalyticsPage() {
         {/* Monthly Trend */}
         {analytics?.trends.appointmentsByMonth && analytics.trends.appointmentsByMonth.length > 0 && (
           <Card className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
                   <TrendingUp className="h-4 w-4 text-primary" />
@@ -404,7 +404,7 @@ function MetricRow({
   icon?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border/50 hover:bg-muted/50 transition-colors">
+    <div className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border hover:bg-muted/50 transition-colors">
       <div>
         <p className="text-xs text-muted-foreground mb-1">{label}</p>
         <p className="font-display text-2xl font-bold">{value}</p>

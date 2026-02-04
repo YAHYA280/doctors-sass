@@ -384,7 +384,7 @@ export default function PatientsPage() {
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">Forms Submitted</p>
                 </div>
-                <div className="p-4 rounded-xl bg-muted/50 border border-border/50 text-center">
+                <div className="p-4 rounded-xl bg-muted/50 border border-border text-center">
                   <p className="font-display text-sm font-semibold">
                     {selectedPatient.lastAppointment
                       ? formatDate(selectedPatient.lastAppointment)
@@ -406,7 +406,7 @@ export default function PatientsPage() {
                       {selectedPatient.formSubmissions.map((submission) => (
                         <div
                           key={submission.id}
-                          className="p-4 rounded-xl border border-border/50 hover:bg-muted/30 transition-colors"
+                          className="p-4 rounded-xl border border-border hover:bg-muted/30 transition-colors"
                         >
                           <div className="flex items-center justify-between mb-3">
                             <span className="font-medium">{submission.formName}</span>

@@ -23,7 +23,6 @@ import {
 import { DashboardHeader } from "@/components/layouts/dashboard-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -141,17 +140,30 @@ export default function MyPagePage() {
                   <Link2 className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-display font-semibold text-xl text-white">Your Booking Link</h3>
+                  <a
+                    href={bookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-2"
+                  >
+                    <h3 className="font-display font-semibold text-xl text-white group-hover:underline">
+                      Your Booking Link
+                    </h3>
+                    <ArrowUpRight className="h-4 w-4 text-white/70 group-hover:text-white transition-colors" />
+                  </a>
                   <p className="text-white/70 text-sm">Share this link with patients to let them book directly</p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="flex-1 relative">
-                  <Input
-                    value={bookingUrl}
-                    readOnly
-                    className="font-mono text-sm bg-white/10 border-white/20 text-white placeholder:text-white/50 pr-20 h-12"
-                  />
+                  <a
+                    href={bookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center w-full font-mono text-sm bg-white/10 border border-white/20 text-white rounded-md px-3 h-12 hover:bg-white/15 transition-colors truncate"
+                  >
+                    {bookingUrl}
+                  </a>
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -236,7 +248,7 @@ export default function MyPagePage() {
 
         {/* Page Preview */}
         <div className="card-premium overflow-hidden">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
                 <Eye className="h-5 w-5 text-primary" />
@@ -248,7 +260,7 @@ export default function MyPagePage() {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="border-b border-border/50">
+            <div className="border-b border-border">
               {/* Browser-like header */}
               <div className="bg-muted/30 px-4 py-2 flex items-center gap-2 border-b border-border/30">
                 <div className="flex gap-1.5">
@@ -287,7 +299,7 @@ export default function MyPagePage() {
                   </div>
                 </div>
                 {doctorData?.welcomeMessage && (
-                  <div className="mt-4 p-4 rounded-xl bg-background/80 border border-border/50">
+                  <div className="mt-4 p-4 rounded-xl bg-background/80 border border-border">
                     <p className="text-muted-foreground text-sm italic leading-relaxed">
                       &ldquo;{doctorData.welcomeMessage}&rdquo;
                     </p>
@@ -300,7 +312,7 @@ export default function MyPagePage() {
 
         {/* Tips for Getting More Bookings */}
         <div className="card-premium">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 flex items-center justify-center">
                 <Sparkles className="h-5 w-5 text-accent" />
@@ -316,7 +328,7 @@ export default function MyPagePage() {
               {tips.map((tip, index) => (
                 <div
                   key={index}
-                  className="group p-4 rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 hover:shadow-soft-md hover:border-primary/20 transition-all duration-300"
+                  className="group p-4 rounded-xl border border-border bg-gradient-to-br from-background to-muted/20 hover:shadow-soft-md hover:border-primary/20 transition-all duration-300"
                 >
                   <div className="flex items-start gap-3">
                     <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">

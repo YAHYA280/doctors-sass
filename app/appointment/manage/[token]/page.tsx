@@ -360,7 +360,7 @@ export default function ManageAppointmentPage() {
 
         {/* Appointment Details */}
         <Card className="card-premium">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div
                 className="h-11 w-11 rounded-xl flex items-center justify-center"
@@ -414,7 +414,7 @@ export default function ManageAppointmentPage() {
 
         {/* Doctor Info */}
         <Card className="card-premium">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div
                 className="h-11 w-11 rounded-xl flex items-center justify-center"
@@ -476,7 +476,7 @@ export default function ManageAppointmentPage() {
 
         {/* Patient Info */}
         <Card className="card-premium">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div
                 className="h-11 w-11 rounded-xl flex items-center justify-center"

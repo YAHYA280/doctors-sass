@@ -324,7 +324,7 @@ export default function AdminUsersPage() {
 
         {/* Users Table */}
         <div className="card-premium overflow-hidden">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
                 <Users className="h-5 w-5 text-primary" />

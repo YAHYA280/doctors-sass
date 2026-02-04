@@ -233,7 +233,7 @@ export default function CalendarPage() {
       <div className="p-4 lg:p-8 space-y-6">
         {/* Weekly Availability */}
         <Card className="card-premium">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Clock className="h-5 w-5 text-primary" />
@@ -267,7 +267,7 @@ export default function CalendarPage() {
                     className={cn(
                       "flex flex-wrap items-center gap-4 p-4 rounded-xl border transition-all duration-200",
                       slot.isActive
-                        ? "bg-muted/30 border-border/50"
+                        ? "bg-muted/30 border-border"
                         : "bg-muted/10 border-border/30 opacity-60"
                     )}
                     style={{ animationDelay: `${index * 50}ms` }}
@@ -295,7 +295,7 @@ export default function CalendarPage() {
                         updateTimeSlot(index, "dayOfWeek", parseInt(value))
                       }
                     >
-                      <SelectTrigger className="w-36 h-10 rounded-xl bg-background border-border/50">
+                      <SelectTrigger className="w-36 h-10 rounded-xl bg-background border-border">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="rounded-xl">
@@ -314,7 +314,7 @@ export default function CalendarPage() {
                         onChange={(e) =>
                           updateTimeSlot(index, "startTime", e.target.value)
                         }
-                        className="w-32 h-10 rounded-xl bg-background border-border/50"
+                        className="w-32 h-10 rounded-xl bg-background border-border"
                       />
                       <span className="text-muted-foreground">to</span>
                       <Input
@@ -323,7 +323,7 @@ export default function CalendarPage() {
                         onChange={(e) =>
                           updateTimeSlot(index, "endTime", e.target.value)
                         }
-                        className="w-32 h-10 rounded-xl bg-background border-border/50"
+                        className="w-32 h-10 rounded-xl bg-background border-border"
                       />
                     </div>
 
@@ -333,7 +333,7 @@ export default function CalendarPage() {
                         updateTimeSlot(index, "slotDuration", parseInt(value))
                       }
                     >
-                      <SelectTrigger className="w-28 h-10 rounded-xl bg-background border-border/50">
+                      <SelectTrigger className="w-28 h-10 rounded-xl bg-background border-border">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="rounded-xl">
@@ -355,7 +355,7 @@ export default function CalendarPage() {
                   </div>
                 ))}
 
-                <div className="flex justify-end pt-4 border-t border-border/50 mt-4">
+                <div className="flex justify-end pt-4 border-t border-border mt-4">
                   <Button
                     onClick={saveAvailability}
                     disabled={saving}
@@ -377,7 +377,7 @@ export default function CalendarPage() {
         {/* Block Time Off */}
         <div className="grid gap-6 lg:grid-cols-2">
           <Card className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center">
                   <CalendarIcon className="h-5 w-5 text-accent" />
@@ -397,13 +397,13 @@ export default function CalendarPage() {
                   if (date) setShowBlockDialog(true);
                 }}
                 disabled={(date) => date < new Date()}
-                className="rounded-xl border border-border/50"
+                className="rounded-xl border border-border"
               />
             </CardContent>
           </Card>
 
           <Card className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-destructive/10 flex items-center justify-center">
                   <CalendarX className="h-5 w-5 text-destructive" />
@@ -480,7 +480,7 @@ export default function CalendarPage() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-5 py-4">
-            <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
+            <div className="p-4 rounded-xl bg-muted/30 border border-border">
               <Label className="text-xs text-muted-foreground">Selected Date</Label>
               <p className="font-display text-lg font-semibold mt-1">
                 {selectedDate?.toLocaleDateString("en-US", {

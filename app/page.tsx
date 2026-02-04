@@ -146,7 +146,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             <Link href="/" className="flex items-center gap-2.5">
@@ -266,9 +266,9 @@ export default function HomePage() {
           {/* Hero Image / Dashboard Preview */}
           <div className="animate-fade-up mt-20 lg:mt-24 relative">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-[2rem] blur-3xl opacity-30" />
-            <div className="relative bg-card rounded-2xl lg:rounded-3xl border border-border/50 shadow-soft-xl overflow-hidden">
+            <div className="relative bg-card rounded-2xl lg:rounded-3xl border border-border shadow-soft-xl overflow-hidden">
               {/* Browser Chrome */}
-              <div className="h-12 bg-muted/30 flex items-center gap-2 px-5 border-b border-border/50">
+              <div className="h-12 bg-muted/30 flex items-center gap-2 px-5 border-b border-border">
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
                   <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
@@ -304,7 +304,7 @@ export default function HomePage() {
 
                 {/* Content Grid */}
                 <div className="grid md:grid-cols-3 gap-4">
-                  <div className="md:col-span-2 bg-card rounded-2xl border border-border/50 p-5">
+                  <div className="md:col-span-2 bg-card rounded-2xl border border-border p-5">
                     <div className="flex items-center justify-between mb-5">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-5 w-5 text-primary" />
@@ -336,7 +336,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="bg-card rounded-2xl border border-border/50 p-5">
+                  <div className="bg-card rounded-2xl border border-border p-5">
                     <div className="flex items-center gap-2 mb-5">
                       <BarChart3 className="h-5 w-5 text-accent" />
                       <span className="font-semibold">Weekly Overview</span>
@@ -369,7 +369,7 @@ export default function HomePage() {
       </section>
 
       {/* Logos Section */}
-      <section className="py-16 border-y border-border/50 bg-muted/20">
+      <section className="py-16 border-y border-border bg-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-muted-foreground mb-8">
             Trusted by leading healthcare providers worldwide
@@ -554,7 +554,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 lg:py-20 border-t border-border/50">
+      <footer className="py-16 lg:py-20 border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
             <div className="lg:col-span-2">
@@ -587,7 +587,7 @@ export default function HomePage() {
               </ul>
             </div>
           </div>
-          <div className="mt-16 pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} MediBook. All rights reserved.
             </p>

@@ -373,7 +373,7 @@ export default function AdminSubscriptionsPage() {
 
         {/* Subscriptions Table */}
         <div className="card-premium overflow-hidden">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 flex items-center justify-center">
                 <CreditCard className="h-5 w-5 text-violet-600" />
@@ -601,7 +601,7 @@ export default function AdminSubscriptionsPage() {
                 </div>
               </div>
               {selectedSubscription.stripeSubscriptionId && (
-                <div className="pt-4 border-t border-border/50">
+                <div className="pt-4 border-t border-border">
                   <Label className="text-xs text-muted-foreground">Stripe Subscription ID</Label>
                   <p className="font-mono text-sm mt-1 bg-muted/50 px-3 py-2 rounded-lg">
                     {selectedSubscription.stripeSubscriptionId}

@@ -194,7 +194,7 @@ export default function AdminDashboard() {
         <div className="grid gap-6 md:grid-cols-2">
           {/* Subscription Distribution */}
           <div className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 flex items-center justify-center">
                   <CreditCard className="h-5 w-5 text-violet-600" />
@@ -256,7 +256,7 @@ export default function AdminDashboard() {
 
           {/* Quick Actions */}
           <div className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
                   <Sparkles className="h-5 w-5 text-primary" />
@@ -272,7 +272,7 @@ export default function AdminDashboard() {
                 <Link key={action.href} href={action.href}>
                   <Button
                     variant="outline"
-                    className="w-full justify-between h-12 border-border/50 hover:bg-muted/50 hover:border-primary/30 transition-all"
+                    className="w-full justify-between h-12 border-border hover:bg-muted/50 hover:border-primary/30 transition-all"
                   >
                     <span className="flex items-center gap-2">
                       {action.icon && <action.icon className="h-4 w-4 text-muted-foreground" />}
@@ -354,7 +354,7 @@ export default function AdminDashboard() {
         {/* Revenue History */}
         {stats?.revenueHistory && stats.revenueHistory.length > 0 && (
           <div className="card-premium">
-            <CardHeader className="border-b border-border/50 bg-muted/30">
+            <CardHeader className="border-b border-border bg-muted/30">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500/10 to-green-500/10 flex items-center justify-center">
                   <BarChart3 className="h-5 w-5 text-emerald-600" />

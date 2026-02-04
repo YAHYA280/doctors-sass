@@ -420,7 +420,7 @@ export default function BookingPage() {
               "card-premium transition-all duration-300",
               step === 2 && "opacity-60"
             )}>
-              <CardHeader className="border-b border-border/50 bg-muted/30">
+              <CardHeader className="border-b border-border bg-muted/30">
                 <div className="flex items-center gap-3">
                   <div
                     className="h-11 w-11 rounded-xl flex items-center justify-center"
@@ -447,7 +447,7 @@ export default function BookingPage() {
                         setStep(1);
                       }}
                       disabled={(date) => date < new Date()}
-                      className="rounded-xl border-2 border-border/50 p-4"
+                      className="rounded-xl border-2 border-border p-4"
                     />
                   </div>
 
@@ -491,7 +491,7 @@ export default function BookingPage() {
                                 "h-12 rounded-xl text-sm font-medium transition-all duration-200 border-2",
                                 selectedTime === slot.time
                                   ? "text-white border-transparent shadow-lg scale-[1.02]"
-                                  : "bg-background border-border/50 hover:border-primary/30 hover:bg-muted/50"
+                                  : "bg-background border-border hover:border-primary/30 hover:bg-muted/50"
                               )}
                               style={
                                 selectedTime === slot.time
@@ -527,7 +527,7 @@ export default function BookingPage() {
               "card-premium transition-all duration-300 sticky top-6",
               step === 1 && "opacity-60 pointer-events-none"
             )}>
-              <CardHeader className="border-b border-border/50 bg-muted/30">
+              <CardHeader className="border-b border-border bg-muted/30">
                 <div className="flex items-center gap-3">
                   <div
                     className="h-11 w-11 rounded-xl flex items-center justify-center"
@@ -681,7 +681,7 @@ export default function BookingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 py-8 bg-muted/20">
+      <footer className="border-t border-border py-8 bg-muted/20">
         <div className="container max-w-5xl mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -725,7 +725,7 @@ function BookingPageSkeleton() {
         <div className="grid lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3">
             <Card className="card-premium">
-              <CardHeader className="border-b border-border/50 bg-muted/30">
+              <CardHeader className="border-b border-border bg-muted/30">
                 <Skeleton className="h-6 w-48" />
               </CardHeader>
               <CardContent className="p-6">
@@ -745,7 +745,7 @@ function BookingPageSkeleton() {
           </div>
           <div className="lg:col-span-2">
             <Card className="card-premium">
-              <CardHeader className="border-b border-border/50 bg-muted/30">
+              <CardHeader className="border-b border-border bg-muted/30">
                 <Skeleton className="h-6 w-40" />
               </CardHeader>
               <CardContent className="p-6 space-y-4">

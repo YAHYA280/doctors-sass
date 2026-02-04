@@ -322,7 +322,7 @@ export default function TeamPage() {
 
         {/* Team Members Table */}
         <div className="card-premium overflow-hidden">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
                 <Users className="h-5 w-5 text-primary" />
@@ -449,7 +449,7 @@ export default function TeamPage() {
 
         {/* Role Descriptions */}
         <div className="card-premium">
-          <CardHeader className="border-b border-border/50 bg-muted/30">
+          <CardHeader className="border-b border-border bg-muted/30">
             <CardTitle className="text-base font-semibold">Role Permissions</CardTitle>
             <CardDescription>Understanding what each role can do</CardDescription>
           </CardHeader>
@@ -458,7 +458,7 @@ export default function TeamPage() {
               {roleDescriptions.map((role, index) => (
                 <div
                   key={role.role}
-                  className="group p-5 rounded-2xl border border-border/50 bg-gradient-to-br from-background to-muted/20 hover:shadow-soft-md hover:border-primary/20 transition-all duration-300"
+                  className="group p-5 rounded-2xl border border-border bg-gradient-to-br from-background to-muted/20 hover:shadow-soft-md hover:border-primary/20 transition-all duration-300"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className={`h-12 w-12 rounded-xl bg-gradient-to-br ${role.color} flex items-center justify-center mb-4 shadow-lg ${role.shadowColor} group-hover:scale-110 transition-transform`}>

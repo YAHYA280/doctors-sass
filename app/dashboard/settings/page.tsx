@@ -157,7 +157,7 @@ export default function SettingsPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <TabsContent value="profile" className="mt-0">
               <Card className="card-premium">
-                <CardHeader className="border-b border-border/50 bg-muted/30">
+                <CardHeader className="border-b border-border bg-muted/30">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
                       <User className="h-5 w-5 text-primary" />
@@ -221,7 +221,7 @@ export default function SettingsPage() {
 
             <TabsContent value="clinic" className="mt-0">
               <Card className="card-premium">
-                <CardHeader className="border-b border-border/50 bg-muted/30">
+                <CardHeader className="border-b border-border bg-muted/30">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center">
                       <Building className="h-5 w-5 text-accent" />
@@ -258,7 +258,7 @@ export default function SettingsPage() {
 
             <TabsContent value="branding" className="mt-0">
               <Card className="card-premium">
-                <CardHeader className="border-b border-border/50 bg-muted/30">
+                <CardHeader className="border-b border-border bg-muted/30">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-xl bg-success/10 flex items-center justify-center">
                       <Palette className="h-5 w-5 text-success" />
@@ -277,7 +277,7 @@ export default function SettingsPage() {
                         <Input
                           id="brandColor"
                           type="color"
-                          className="w-16 h-16 p-1 cursor-pointer rounded-xl border-2 border-border/50"
+                          className="w-16 h-16 p-1 cursor-pointer rounded-xl border-2 border-border"
                           {...register("brandColor")}
                         />
                       </div>
@@ -293,7 +293,7 @@ export default function SettingsPage() {
                       </div>
                     </div>
                     {/* Color Preview */}
-                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/30">
+                    <div className="mt-4 p-4 rounded-xl border border-border bg-muted/30">
                       <p className="text-xs text-muted-foreground mb-3">Preview</p>
                       <div className="flex gap-3">
                         <Button
@@ -333,7 +333,7 @@ export default function SettingsPage() {
 
             <TabsContent value="subscription" className="mt-0">
               <Card className="card-premium">
-                <CardHeader className="border-b border-border/50 bg-muted/30">
+                <CardHeader className="border-b border-border bg-muted/30">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-xl bg-warning/10 flex items-center justify-center">
                       <CreditCard className="h-5 w-5 text-warning" />
@@ -346,7 +346,7 @@ export default function SettingsPage() {
                 </CardHeader>
                 <CardContent className="p-6 space-y-5">
                   {/* Current Plan */}
-                  <div className="flex items-center justify-between p-5 rounded-xl bg-muted/30 border border-border/50">
+                  <div className="flex items-center justify-between p-5 rounded-xl bg-muted/30 border border-border">
                     <div className="flex items-center gap-4">
                       <div className={cn(
                         "h-12 w-12 rounded-xl flex items-center justify-center",
@@ -376,7 +376,7 @@ export default function SettingsPage() {
                   {/* Plan Details */}
                   <div className="grid gap-4 md:grid-cols-2">
                     {profileData?.subscriptionEnd && (
-                      <div className="p-5 rounded-xl border border-border/50 bg-card">
+                      <div className="p-5 rounded-xl border border-border bg-card">
                         <div className="flex items-center gap-2 mb-2">
                           {profileData?.subscriptionPlan === "free_trial" ? (
                             <AlertCircle className="h-4 w-4 text-warning" />
@@ -401,7 +401,7 @@ export default function SettingsPage() {
                       </div>
                     )}
 
-                    <div className="p-5 rounded-xl border border-border/50 bg-card">
+                    <div className="p-5 rounded-xl border border-border bg-card">
                       <p className="text-xs text-muted-foreground mb-2">Patients this month</p>
                       <p className="font-display text-3xl font-bold text-primary">
                         {profileData?.patientCountThisMonth || 0}
