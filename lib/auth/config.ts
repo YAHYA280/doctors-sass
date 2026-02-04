@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import { MOCK_USERS, MOCK_DOCTOR, IS_MOCK_MODE } from "@/lib/mock-data";
+import { MOCK_USERS, MOCK_DOCTOR, IS_MOCK_MODE_SERVER } from "@/lib/mock-data";
 
 // Conditionally import database only if not in mock mode
 let db: any = null;
@@ -9,7 +9,7 @@ let users: any = null;
 let doctors: any = null;
 let eq: any = null;
 
-if (!IS_MOCK_MODE) {
+if (!IS_MOCK_MODE_SERVER) {
   try {
     const dbModule = require("@/lib/db");
     const schemaModule = require("@/lib/db/schema");
@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         // Mock mode authentication
-        if (IS_MOCK_MODE || !db) {
+        if (IS_MOCK_MODE_SERVER || !db) {
           // Check doctor credentials
           if (
             credentials.email === MOCK_USERS.doctor.email &&
@@ -153,7 +153,7 @@ export const authOptions: NextAuthOptions = {
   events: {
     async signIn({ user }) {
       // Update last login timestamp (skip in mock mode)
-      if (!IS_MOCK_MODE && db && user.id) {
+      if (!IS_MOCK_MODE_SERVER && db && user.id) {
         try {
           await db
             .update(users)

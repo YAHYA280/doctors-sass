@@ -20,7 +20,7 @@ export const MOCK_USERS = {
 export const MOCK_DOCTOR = {
   id: "doc-001",
   userId: "doc-001",
-  fullName: "Dr. Sarah Johnson",
+  fullName: "Sarah Johnson",
   email: "doctor@demo.com",
   specialty: "General Practitioner",
   phone: "+1 (555) 123-4567",
@@ -28,7 +28,7 @@ export const MOCK_DOCTOR = {
   profileImage: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400",
   clinicName: "Johnson Family Practice",
   address: "123 Medical Center Dr, Suite 100, New York, NY 10001",
-  slug: "dr-sarah-johnson",
+  slug: "sarah-johnson",
   subscriptionPlan: "premium",
   subscriptionStatus: "active",
   brandColor: "#0A6847",
@@ -509,7 +509,14 @@ export const MOCK_DOCTOR_ANALYTICS = {
 export const MOCK_ANALYTICS = MOCK_DOCTOR_ANALYTICS;
 
 // Check if mock mode is enabled
-export const IS_MOCK_MODE = process.env.NEXT_PUBLIC_USE_MOCK_DATA === "true" || !process.env.DATABASE_URL;
+// Note: DATABASE_URL is server-only, so we use NEXT_PUBLIC_USE_MOCK_DATA for client-side detection
+// For server-side API routes, they can additionally check DATABASE_URL
+export const IS_MOCK_MODE = process.env.NEXT_PUBLIC_USE_MOCK_DATA === "true";
+
+// Server-side only check (for API routes)
+export const IS_MOCK_MODE_SERVER = typeof window === "undefined"
+  ? (process.env.NEXT_PUBLIC_USE_MOCK_DATA === "true" || !process.env.DATABASE_URL)
+  : IS_MOCK_MODE;
 
 // Mock data getter with type safety
 export function getMockData<T>(key: string): T | null {
