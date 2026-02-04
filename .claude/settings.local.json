@@ -24,7 +24,9 @@
       "Bash(npx dotenv:*)",
       "Bash(npm run db:seed:*)",
       "Bash(powershell -Command \"Get-ChildItem -Path ''app'', ''components'' -Recurse -Include ''*.tsx'' | ForEach-Object { \\(Get-Content $_FullName -Raw\\) -replace ''border-border/50'', ''border-border'' | Set-Content $_FullName -NoNewline }\")",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(git rm:*)",
+      "Bash(ls:*)"
     ]
   }
 }
