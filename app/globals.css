@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 40 20% 99%;
+    --background: 40 15% 97%;
     --foreground: 220 25% 10%;
     --card: 0 0% 100%;
     --card-foreground: 220 25% 10%;
@@ -12,50 +12,68 @@
     --popover-foreground: 220 25% 10%;
     --primary: 152 82% 22%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 20% 97%;
+    --secondary: 210 20% 94%;
     --secondary-foreground: 220 25% 10%;
-    --muted: 210 25% 95%;
-    --muted-foreground: 215 15% 45%;
+    --muted: 210 25% 92%;
+    --muted-foreground: 215 15% 40%;
     --accent: 210 79% 51%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 91%;
-    --input: 220 15% 91%;
+    --border: 220 20% 82%;
+    --input: 220 20% 85%;
     --ring: 152 82% 22%;
     --radius: 0.625rem;
 
-    /* Premium shadows */
-    --shadow-color: 220 15% 55%;
-    --shadow-elevation-low: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.05),
-      0.4px 0.8px 1px -1.2px hsl(var(--shadow-color) / 0.05),
-      1px 2px 2.5px -2.5px hsl(var(--shadow-color) / 0.05);
-    --shadow-elevation-medium: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.06),
-      0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.06),
-      2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.06),
-      5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.06);
+    /* Premium shadows - more visible */
+    --shadow-color: 220 25% 40%;
+    --shadow-elevation-low:
+      0px 1px 2px hsl(var(--shadow-color) / 0.06),
+      0px 2px 4px hsl(var(--shadow-color) / 0.06);
+    --shadow-elevation-medium:
+      0px 2px 4px hsl(var(--shadow-color) / 0.04),
+      0px 4px 8px hsl(var(--shadow-color) / 0.06),
+      0px 8px 16px hsl(var(--shadow-color) / 0.08);
+    --shadow-elevation-high:
+      0px 4px 8px hsl(var(--shadow-color) / 0.04),
+      0px 8px 16px hsl(var(--shadow-color) / 0.06),
+      0px 16px 32px hsl(var(--shadow-color) / 0.1);
   }
 
   .dark {
-    --background: 222 47% 6%;
+    --background: 222 47% 5%;
     --foreground: 210 30% 96%;
-    --card: 222 47% 8%;
+    --card: 222 40% 10%;
     --card-foreground: 210 30% 96%;
-    --popover: 222 47% 8%;
+    --popover: 222 40% 10%;
     --popover-foreground: 210 30% 96%;
-    --primary: 152 65% 40%;
+    --primary: 152 65% 45%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 222 30% 14%;
+    --secondary: 222 30% 15%;
     --secondary-foreground: 210 30% 96%;
-    --muted: 222 30% 14%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 222 30% 16%;
+    --muted-foreground: 215 20% 60%;
     --accent: 210 79% 55%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 65% 45%;
+    --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
-    --ring: 152 65% 40%;
+    --border: 222 25% 25%;
+    --input: 222 25% 22%;
+    --ring: 152 65% 45%;
+
+    /* Dark mode shadows */
+    --shadow-color: 222 50% 3%;
+    --shadow-elevation-low:
+      0px 1px 2px hsl(var(--shadow-color) / 0.4),
+      0px 2px 4px hsl(var(--shadow-color) / 0.3);
+    --shadow-elevation-medium:
+      0px 2px 4px hsl(var(--shadow-color) / 0.3),
+      0px 4px 8px hsl(var(--shadow-color) / 0.4),
+      0px 8px 16px hsl(var(--shadow-color) / 0.5);
+    --shadow-elevation-high:
+      0px 4px 8px hsl(var(--shadow-color) / 0.3),
+      0px 8px 16px hsl(var(--shadow-color) / 0.4),
+      0px 16px 32px hsl(var(--shadow-color) / 0.5);
   }
 }
 
@@ -100,18 +118,50 @@
 @layer components {
   /* Premium Card Styles */
   .card-premium {
-    @apply relative bg-card rounded-2xl border border-border/50;
+    @apply relative bg-card rounded-2xl border border-border;
     box-shadow: var(--shadow-elevation-medium);
+  }
+
+  .dark .card-premium {
+    @apply border-border bg-card;
+    box-shadow: var(--shadow-elevation-medium),
+      inset 0 1px 0 0 hsl(var(--border) / 0.5);
   }
 
   .card-premium::before {
     content: '';
     @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300;
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.03), transparent);
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.04), transparent);
   }
 
   .card-premium:hover::before {
     @apply opacity-100;
+  }
+
+  .card-premium:hover {
+    box-shadow: var(--shadow-elevation-high);
+  }
+
+  /* Section Card - for distinct content areas */
+  .card-section {
+    @apply relative bg-card rounded-xl border border-border p-6;
+    box-shadow: var(--shadow-elevation-low);
+  }
+
+  .dark .card-section {
+    background: linear-gradient(180deg, hsl(222 40% 11%) 0%, hsl(222 40% 9%) 100%);
+    border-color: hsl(var(--border));
+  }
+
+  /* Elevated Card - for important content */
+  .card-elevated {
+    @apply relative bg-card rounded-2xl border-2 border-border;
+    box-shadow: var(--shadow-elevation-high);
+  }
+
+  .dark .card-elevated {
+    border-color: hsl(222 25% 28%);
+    background: linear-gradient(180deg, hsl(222 40% 12%) 0%, hsl(222 40% 9%) 100%);
   }
 
   /* Glass Effect */
@@ -183,9 +233,19 @@
 
   /* Stat Card */
   .stat-card {
-    @apply relative overflow-hidden rounded-2xl bg-gradient-to-br from-card to-card/80 p-6;
-    @apply border border-border/50 transition-all duration-300;
-    @apply hover:shadow-soft-lg hover:-translate-y-1;
+    @apply relative overflow-hidden rounded-2xl bg-card p-6;
+    @apply border border-border transition-all duration-300;
+    box-shadow: var(--shadow-elevation-medium);
+  }
+
+  .stat-card:hover {
+    @apply -translate-y-1;
+    box-shadow: var(--shadow-elevation-high);
+  }
+
+  .dark .stat-card {
+    background: linear-gradient(180deg, hsl(222 40% 11%) 0%, hsl(222 40% 9%) 100%);
+    border-color: hsl(var(--border));
   }
 
   .stat-card::after {
@@ -217,6 +277,10 @@
   }
 
   .table-premium thead {
+    @apply bg-muted/50;
+  }
+
+  .dark .table-premium thead {
     @apply bg-muted/30;
   }
 
@@ -229,14 +293,22 @@
   }
 
   .table-premium tbody tr {
-    @apply border-b border-border/50 transition-colors duration-150;
+    @apply border-b border-border transition-colors duration-150;
+    @apply hover:bg-muted/40;
+  }
+
+  .dark .table-premium tbody tr {
     @apply hover:bg-muted/20;
   }
 
   /* Sidebar Premium */
   .sidebar-premium {
     @apply flex flex-col h-full bg-gradient-to-b from-card to-card/95;
-    @apply border-r border-border/50;
+    @apply border-r border-border;
+  }
+
+  .dark .sidebar-premium {
+    background: linear-gradient(180deg, hsl(222 40% 8%) 0%, hsl(222 40% 6%) 100%);
   }
 
   .sidebar-item {
@@ -299,9 +371,18 @@
 
   /* Feature Card */
   .feature-card {
-    @apply relative p-8 rounded-3xl bg-card border border-border/50;
+    @apply relative p-8 rounded-3xl bg-card border border-border;
     @apply transition-all duration-500 ease-out;
-    @apply hover:shadow-soft-lg hover:-translate-y-2;
+    box-shadow: var(--shadow-elevation-medium);
+  }
+
+  .feature-card:hover {
+    @apply -translate-y-2;
+    box-shadow: var(--shadow-elevation-high);
+  }
+
+  .dark .feature-card {
+    background: linear-gradient(180deg, hsl(222 40% 11%) 0%, hsl(222 40% 9%) 100%);
   }
 
   .feature-card::before {
@@ -316,23 +397,43 @@
 
   /* Pricing Card */
   .pricing-card {
-    @apply relative flex flex-col p-8 rounded-3xl bg-card border border-border/50;
+    @apply relative flex flex-col p-8 rounded-3xl bg-card border border-border;
     @apply transition-all duration-300;
+    box-shadow: var(--shadow-elevation-medium);
+  }
+
+  .dark .pricing-card {
+    background: linear-gradient(180deg, hsl(222 40% 11%) 0%, hsl(222 40% 9%) 100%);
   }
 
   .pricing-card.featured {
-    @apply border-primary/30 bg-gradient-to-b from-primary/5 to-transparent;
-    @apply shadow-glow-primary;
+    @apply border-primary bg-gradient-to-b from-primary/5 to-transparent;
+    box-shadow: var(--shadow-elevation-high), 0 0 40px -10px hsl(var(--primary) / 0.3);
+  }
+
+  .dark .pricing-card.featured {
+    @apply border-primary/60;
+    background: linear-gradient(180deg, hsl(152 65% 45% / 0.08) 0%, hsl(222 40% 9%) 100%);
   }
 
   /* Dialog Premium */
   .dialog-premium {
-    @apply rounded-3xl border border-border/50 bg-card p-0 shadow-soft-xl;
+    @apply rounded-3xl border border-border bg-card p-0;
+    box-shadow: var(--shadow-elevation-high);
+  }
+
+  .dark .dialog-premium {
+    background: hsl(222 40% 10%);
+    border-color: hsl(222 25% 28%);
   }
 
   /* Skeleton Premium */
   .skeleton-premium {
     @apply relative overflow-hidden rounded-lg bg-muted;
+  }
+
+  .dark .skeleton-premium {
+    @apply bg-muted/50;
   }
 
   .skeleton-premium::after {
@@ -344,7 +445,12 @@
 
   /* Chart Container */
   .chart-container {
-    @apply relative p-6 rounded-2xl bg-card border border-border/50;
+    @apply relative p-6 rounded-2xl bg-card border border-border;
+    box-shadow: var(--shadow-elevation-low);
+  }
+
+  .dark .chart-container {
+    background: linear-gradient(180deg, hsl(222 40% 10%) 0%, hsl(222 40% 8%) 100%);
   }
 
   /* Notification Dot */
