@@ -3,9 +3,8 @@ import type { Config } from "drizzle-kit";
 export default {
   schema: "./lib/db/schema.ts",
   out: "./drizzle",
-  dialect: "postgresql",
+  driver: "pg",
   dbCredentials: {
-    // @ts-expect-error - url is valid for postgresql dialect
-    url: process.env.DATABASE_URL!,
+    connectionString: process.env.DATABASE_URL!,
   },
 } satisfies Config;
