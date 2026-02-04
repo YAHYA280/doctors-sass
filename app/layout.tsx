@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_APP_URL,
+    url: process.env.NEXT_PUBLIC_APP_URL || "https://medibook.app",
     title: "MediBook - Doctor Management SaaS",
     description:
       "Streamline your medical practice with MediBook. Manage appointments, patients, and bookings effortlessly.",
