@@ -27,6 +27,31 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate, formatTime, cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { NextPatientCard } from "@/components/dashboard/next-patient-card";
+
+interface NextPatientData {
+  id: string;
+  appointmentDate: string;
+  timeSlot: string;
+  duration: number;
+  status: string;
+  reason: string | null;
+  notes: string | null;
+  patient: {
+    id: string;
+    fullName: string;
+    email: string | null;
+    phone: string | null;
+    gender?: string | null;
+    dateOfBirth?: string | null;
+    medicalHistory?: {
+      conditions?: string[];
+      allergies?: string[];
+      medications?: string[];
+      notes?: string;
+    } | null;
+  };
+}
 
 interface DashboardStats {
   totalPatients: number;
@@ -52,8 +77,11 @@ export default function DoctorDashboard() {
   const { session } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentAppointments, setRecentAppointments] = useState<Appointment[]>([]);
+  const [nextPatient, setNextPatient] = useState<NextPatientData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [nextPatientLoading, setNextPatientLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [doctorName, setDoctorName] = useState<string>("");
 
   const bookingUrl = typeof window !== "undefined"
     ? `${window.location.origin}/dr/${session?.user?.doctorSlug}`
@@ -67,6 +95,24 @@ export default function DoctorDashboard() {
   };
 
   useEffect(() => {
+    const fetchNextPatient = async () => {
+      try {
+        const res = await fetch("/api/doctors/appointments/next");
+        const data = await res.json();
+        if (data.success && data.data) {
+          setNextPatient(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching next patient:", error);
+      } finally {
+        setNextPatientLoading(false);
+      }
+    };
+
+    fetchNextPatient();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const profileRes = await fetch("/api/doctors/profile");
@@ -76,6 +122,7 @@ export default function DoctorDashboard() {
         const appointmentsData = await appointmentsRes.json();
 
         if (profileData.success) {
+          setDoctorName(profileData.data.fullName || "");
           setStats({
             totalPatients: profileData.data.patientCountThisMonth || 0,
             appointmentsToday: 0,
@@ -137,7 +184,7 @@ export default function DoctorDashboard() {
     <div className="animate-fade-in">
       <DashboardHeader
         title="Dashboard"
-        description={`Welcome back, Dr. ${session?.user?.doctorSlug?.replace(/-/g, " ") || ""}`}
+        description={`Welcome back${doctorName ? `, Dr. ${doctorName}` : ""}`}
       />
 
       <div className="p-4 lg:p-8 space-y-8">
@@ -154,7 +201,7 @@ export default function DoctorDashboard() {
                 <span className="text-xs font-medium">Your Practice Dashboard</span>
               </div>
               <h2 className="font-display text-2xl lg:text-3xl font-semibold mb-2">
-                Good {getGreeting()}, Dr. {session?.user?.doctorSlug?.replace(/-/g, " ") || ""}
+                Good {getGreeting()}{doctorName ? `, Dr. ${doctorName}` : ""}
               </h2>
               <p className="text-white/80 max-w-lg">
                 You have <span className="font-semibold text-white">{stats?.appointmentsToday || 0} appointments</span> today
@@ -178,6 +225,9 @@ export default function DoctorDashboard() {
             </div>
           </div>
         </div>
+
+        {/* Next Patient Card */}
+        <NextPatientCard data={nextPatient} loading={nextPatientLoading} />
 
         {/* Stats Grid */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -225,7 +275,7 @@ export default function DoctorDashboard() {
           {/* Recent Appointments - Takes 2 columns */}
           <div className="lg:col-span-2">
             <Card className="card-premium overflow-hidden">
-              <CardHeader className="flex flex-row items-center justify-between border-b border-border/50 bg-muted/30">
+              <CardHeader className="flex flex-row items-center justify-between border-b border-border bg-muted/40">
                 <div>
                   <CardTitle className="font-display text-lg">Recent Appointments</CardTitle>
                   <p className="text-sm text-muted-foreground mt-0.5">Your latest patient appointments</p>
@@ -239,7 +289,7 @@ export default function DoctorDashboard() {
               </CardHeader>
               <CardContent className="p-0">
                 {loading ? (
-                  <div className="divide-y divide-border/50">
+                  <div className="divide-y divide-border">
                     {[1, 2, 3, 4].map((i) => (
                       <div key={i} className="flex items-center gap-4 p-4">
                         <Skeleton className="h-12 w-12 rounded-xl" />
@@ -266,7 +316,7 @@ export default function DoctorDashboard() {
                     </Button>
                   </div>
                 ) : (
-                  <div className="divide-y divide-border/50">
+                  <div className="divide-y divide-border">
                     {recentAppointments.map((appointment, index) => (
                       <div
                         key={appointment.id}
