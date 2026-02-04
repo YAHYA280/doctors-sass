@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
 import { IS_MOCK_MODE_SERVER, MOCK_DOCTOR } from "@/lib/mock-data";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     // In mock mode, bypass session check and return mock data directly

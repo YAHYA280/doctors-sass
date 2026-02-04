@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 import { notifications } from "@/lib/db/schema";
 import { eq, desc, and, count } from "drizzle-orm";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

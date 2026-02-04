@@ -7,6 +7,8 @@ import { paginationSchema, userUpdateSchema, bulkOperationSchema } from "@/lib/v
 import { eq, desc, ilike, or, count, and, sql } from "drizzle-orm";
 import { withRateLimit } from "@/lib/rate-limit";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const rateLimitResponse = await withRateLimit(request, "api");

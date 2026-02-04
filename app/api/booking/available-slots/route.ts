@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { IS_MOCK_MODE_SERVER, MOCK_DOCTOR, MOCK_AVAILABILITY, MOCK_APPOINTMENTS } from "@/lib/mock-data";
 import { getTimeSlots } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

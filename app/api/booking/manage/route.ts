@@ -6,6 +6,8 @@ import { sendAppointmentCancellation } from "@/services/whatsapp";
 import { sendEmail } from "@/services/email";
 import { triggerSlotCancelled } from "@/services/pusher";
 
+export const dynamic = "force-dynamic";
+
 const MODIFY_WINDOW_HOURS = 8;
 
 // GET - Fetch appointment details by token

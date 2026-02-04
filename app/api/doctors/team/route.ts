@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth/config";
 import { IS_MOCK_MODE_SERVER, MOCK_TEAM_MEMBERS } from "@/lib/mock-data";
 import { SUBSCRIPTION_PLANS } from "@/constants/plans";
 
+export const dynamic = "force-dynamic";
+
 // GET - Fetch team members
 export async function GET(request: NextRequest) {
   try {

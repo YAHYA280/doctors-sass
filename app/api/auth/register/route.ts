@@ -6,6 +6,8 @@ import { registerSchema } from "@/lib/validators";
 import { generateUniqueSlug, calculateTrialEndDate } from "@/lib/utils";
 import { withRateLimit } from "@/lib/rate-limit";
 import { DEFAULT_FREE_FORM_FIELDS } from "@/constants/form-fields";
+
+export const dynamic = "force-dynamic";
 import { eq } from "drizzle-orm";
 import { sendWelcomeEmail } from "@/services/email";
 

@@ -6,6 +6,8 @@ import { supportTickets, ticketReplies, users } from "@/lib/db/schema";
 import { eq, desc, count, and, or, ilike } from "drizzle-orm";
 import { paginationSchema, ticketReplySchema } from "@/lib/validators";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

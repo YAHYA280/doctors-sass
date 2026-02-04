@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { IS_MOCK_MODE_SERVER, MOCK_DOCTOR, MOCK_AVAILABILITY, MOCK_FORM_TEMPLATES } from "@/lib/mock-data";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { "doctor-slug": string } }

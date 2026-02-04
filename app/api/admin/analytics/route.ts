@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
 import { db } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
 import { users, doctors, appointments, subscriptions, supportTickets } from "@/lib/db/schema";
 import { count, eq, gte, and, sql } from "drizzle-orm";
 import { getMonthlyRevenue, getRevenueByMonth } from "@/services/stripe";

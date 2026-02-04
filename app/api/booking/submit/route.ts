@@ -6,6 +6,8 @@ import { formatDate, formatTime, addMinutesToTime } from "@/lib/utils";
 import { canAddPatient, canUseWhatsApp } from "@/constants/plans";
 import { v4 as uuidv4 } from "uuid";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting for booking

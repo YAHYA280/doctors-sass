@@ -6,6 +6,8 @@ import { subscriptions, doctors, users } from "@/lib/db/schema";
 import { eq, desc, count } from "drizzle-orm";
 import { paginationSchema } from "@/lib/validators";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
