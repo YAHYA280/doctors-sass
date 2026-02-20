@@ -31,21 +31,27 @@ interface PlatformAnalytics {
     totalDoctors: number;
     totalPatients: number;
     totalAppointments: number;
-    totalRevenue: number;
+    monthlyRevenue: number;
     activeSubscriptions: number;
     newUsersThisMonth: number;
-    appointmentsThisMonth: number;
+    openTickets: number;
+    userGrowth: number;
   };
   subscriptionBreakdown: {
     plan: string;
     count: number;
+  }[];
+  revenueHistory: {
+    month: string;
     revenue: number;
   }[];
-  monthlyGrowth: {
-    month: string;
-    users: number;
-    appointments: number;
-    revenue: number;
+  userTrends: {
+    date: string;
+    count: number;
+  }[];
+  appointmentStats: {
+    status: string;
+    count: number;
   }[];
   topDoctors: {
     id: string;
@@ -62,6 +68,7 @@ export default function AdminAnalyticsPage() {
 
   useEffect(() => {
     const fetchAnalytics = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`/api/admin/analytics?days=${period}`);
         const data = await response.json();
@@ -106,11 +113,10 @@ export default function AdminAnalyticsPage() {
   const overviewStats = [
     {
       title: "Total Revenue",
-      value: formatCurrency(analytics?.overview.totalRevenue || 0),
+      value: formatCurrency(analytics?.overview.monthlyRevenue || 0),
       icon: DollarSign,
       color: "from-emerald-500 to-green-500",
       shadowColor: "shadow-emerald-500/20",
-      change: "+12.5%",
     },
     {
       title: "Total Users",
@@ -134,7 +140,6 @@ export default function AdminAnalyticsPage() {
       icon: Calendar,
       color: "from-amber-500 to-orange-500",
       shadowColor: "shadow-amber-500/20",
-      subtext: `${analytics?.overview.appointmentsThisMonth || 0} this month`,
     },
   ];
 
@@ -182,12 +187,6 @@ export default function AdminAnalyticsPage() {
                   {stat.subtext && (
                     <p className="text-xs text-muted-foreground/70 mt-0.5">{stat.subtext}</p>
                   )}
-                  {stat.change && (
-                    <Badge variant="outline" className="mt-2 bg-emerald-500/10 text-emerald-700 border-emerald-200 text-xs">
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                      {stat.change}
-                    </Badge>
-                  )}
                 </div>
                 <div
                   className={`h-12 w-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg ${stat.shadowColor} group-hover:scale-110 transition-transform`}
@@ -210,7 +209,7 @@ export default function AdminAnalyticsPage() {
                 </div>
                 <div>
                   <CardTitle className="text-base font-semibold">Subscription Breakdown</CardTitle>
-                  <CardDescription>Revenue by plan type</CardDescription>
+                  <CardDescription>Distribution by plan type</CardDescription>
                 </div>
               </div>
             </CardHeader>
@@ -224,11 +223,11 @@ export default function AdminAnalyticsPage() {
                       advanced: { bg: "bg-violet-500/20", bar: "bg-violet-500" },
                     };
                     const config = colors[item.plan] || colors.free_trial;
-                    const totalRevenue = analytics.subscriptionBreakdown.reduce(
-                      (sum, i) => sum + i.revenue,
+                    const totalCount = analytics.subscriptionBreakdown.reduce(
+                      (sum, i) => sum + i.count,
                       0
                     );
-                    const percentage = totalRevenue > 0 ? (item.revenue / totalRevenue) * 100 : 0;
+                    const percentage = totalCount > 0 ? (item.count / totalCount) * 100 : 0;
 
                     return (
                       <div key={item.plan} className="space-y-2">
@@ -237,13 +236,13 @@ export default function AdminAnalyticsPage() {
                             {item.plan.replace("_", " ")}
                           </span>
                           <span className="text-sm text-muted-foreground">
-                            {item.count} users - {formatCurrency(item.revenue)}
+                            {item.count} {item.count === 1 ? 'doctor' : 'doctors'}
                           </span>
                         </div>
                         <div className={`w-full h-2 rounded-full ${config.bg}`}>
                           <div
                             className={`h-2 rounded-full ${config.bar} transition-all duration-500`}
-                            style={{ width: `${percentage}%` }}
+                            style={{ width: `${Math.max(percentage, 5)}%` }}
                           />
                         </div>
                       </div>
@@ -322,99 +321,92 @@ export default function AdminAnalyticsPage() {
           </div>
         </div>
 
-        {/* Monthly Growth Chart */}
-        <div className="card-premium">
-          <CardHeader className="border-b border-border bg-muted/30">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-emerald-500/10 flex items-center justify-center">
-                <BarChart3 className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <CardTitle className="text-base font-semibold">Monthly Growth</CardTitle>
-                <CardDescription>Users, appointments, and revenue over time</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="p-6">
-            {analytics?.monthlyGrowth && analytics.monthlyGrowth.length > 0 ? (
-              <div className="space-y-6">
-                {/* Legend */}
-                <div className="flex gap-6 justify-center">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded bg-accent" />
-                    <span className="text-sm text-muted-foreground">Users</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded bg-primary" />
-                    <span className="text-sm text-muted-foreground">Appointments</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded bg-violet-500" />
-                    <span className="text-sm text-muted-foreground">Revenue ($)</span>
-                  </div>
+        {/* Appointment Status Breakdown */}
+        {analytics?.appointmentStats && analytics.appointmentStats.length > 0 && (
+          <div className="card-premium">
+            <CardHeader className="border-b border-border bg-muted/30">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-emerald-500/10 flex items-center justify-center">
+                  <BarChart3 className="h-5 w-5 text-primary" />
                 </div>
+                <div>
+                  <CardTitle className="text-base font-semibold">Appointment Status</CardTitle>
+                  <CardDescription>Distribution of appointment outcomes</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {analytics.appointmentStats.map((item, index) => {
+                  const statusColors: Record<string, string> = {
+                    pending: "from-warning/10 to-warning/5 text-warning border-warning/20",
+                    confirmed: "from-primary/10 to-primary/5 text-primary border-primary/20",
+                    completed: "from-success/10 to-success/5 text-success border-success/20",
+                    cancelled: "from-destructive/10 to-destructive/5 text-destructive border-destructive/20",
+                  };
+                  return (
+                    <div
+                      key={item.status}
+                      className={`p-5 rounded-xl bg-gradient-to-br border transition-all duration-300 hover:-translate-y-1 ${
+                        statusColors[item.status] || "from-muted/50 to-muted/30 border-border"
+                      }`}
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <p className="font-display text-3xl font-bold">{item.count}</p>
+                      <p className="text-sm capitalize mt-1">{item.status.replace("_", " ")}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </div>
+        )}
 
-                {/* Chart */}
-                <div className="h-64 flex items-end justify-between gap-2">
-                  {analytics.monthlyGrowth.map((month, index) => {
-                    const maxUsers = Math.max(
-                      ...analytics.monthlyGrowth.map((m) => m.users)
-                    );
-                    const maxAppointments = Math.max(
-                      ...analytics.monthlyGrowth.map((m) => m.appointments)
-                    );
-                    const maxRevenue = Math.max(
-                      ...analytics.monthlyGrowth.map((m) => m.revenue)
-                    );
+        {/* Revenue History */}
+        {analytics?.revenueHistory && analytics.revenueHistory.length > 0 && (
+          <div className="card-premium">
+            <CardHeader className="border-b border-border bg-muted/30">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500/10 to-green-500/10 flex items-center justify-center">
+                  <DollarSign className="h-5 w-5 text-emerald-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-base font-semibold">Revenue History</CardTitle>
+                  <CardDescription>Monthly revenue over time</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="h-64 flex items-end justify-between gap-2">
+                {analytics.revenueHistory.map((month, index) => {
+                  const maxRevenue = Math.max(
+                    ...analytics.revenueHistory.map((m) => m.revenue)
+                  );
+                  const height = maxRevenue > 0 ? (month.revenue / maxRevenue) * 100 : 0;
 
-                    return (
-                      <div
-                        key={month.month}
-                        className="flex-1 flex flex-col items-center gap-1 group"
-                        style={{ animationDelay: `${index * 0.05}s` }}
-                      >
-                        <div className="flex gap-1 h-48 items-end">
-                          <div
-                            className="w-4 bg-gradient-to-t from-accent to-accent/60 rounded-t transition-all duration-300 group-hover:from-accent group-hover:to-accent/80"
-                            style={{
-                              height: `${maxUsers > 0 ? (month.users / maxUsers) * 100 : 0}%`,
-                              minHeight: "4px",
-                            }}
-                            title={`${month.users} users`}
-                          />
-                          <div
-                            className="w-4 bg-gradient-to-t from-primary to-primary/60 rounded-t transition-all duration-300 group-hover:from-primary group-hover:to-primary/80"
-                            style={{
-                              height: `${maxAppointments > 0 ? (month.appointments / maxAppointments) * 100 : 0}%`,
-                              minHeight: "4px",
-                            }}
-                            title={`${month.appointments} appointments`}
-                          />
-                          <div
-                            className="w-4 bg-gradient-to-t from-violet-500 to-violet-500/60 rounded-t transition-all duration-300 group-hover:from-violet-500 group-hover:to-violet-500/80"
-                            style={{
-                              height: `${maxRevenue > 0 ? (month.revenue / maxRevenue) * 100 : 0}%`,
-                              minHeight: "4px",
-                            }}
-                            title={formatCurrency(month.revenue)}
-                          />
+                  return (
+                    <div
+                      key={index}
+                      className="flex-1 flex flex-col items-center gap-2 group"
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                    >
+                      <div className="relative w-full">
+                        <div
+                          className="w-full bg-gradient-to-t from-emerald-500 to-emerald-500/60 rounded-t-lg transition-all duration-300 group-hover:from-emerald-600 group-hover:to-emerald-500/80"
+                          style={{ height: `${Math.max(height * 2.4, 12)}px` }}
+                        />
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-foreground text-background text-xs px-2 py-1 rounded whitespace-nowrap">
+                          {formatCurrency(month.revenue)}
                         </div>
-                        <span className="text-xs text-muted-foreground">{month.month}</span>
                       </div>
-                    );
-                  })}
-                </div>
+                      <span className="text-xs text-muted-foreground">{month.month}</span>
+                    </div>
+                  );
+                })}
               </div>
-            ) : (
-              <div className="text-center py-12">
-                <div className="h-12 w-12 rounded-xl bg-muted flex items-center justify-center mx-auto mb-3">
-                  <BarChart3 className="h-6 w-6 text-muted-foreground/50" />
-                </div>
-                <p className="text-muted-foreground">No growth data available</p>
-              </div>
-            )}
-          </CardContent>
-        </div>
+            </CardContent>
+          </div>
+        )}
 
         {/* Quick Stats Grid */}
         <div className="grid gap-4 md:grid-cols-3">

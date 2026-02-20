@@ -115,46 +115,45 @@ export default function DoctorDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const profileRes = await fetch("/api/doctors/profile");
-        const profileData = await profileRes.json();
+        // Fetch profile and all appointments in parallel
+        const [profileRes, allAppointmentsRes, recentAppointmentsRes] = await Promise.all([
+          fetch("/api/doctors/profile"),
+          fetch("/api/doctors/appointments?limit=1000"),
+          fetch("/api/doctors/appointments?limit=5"),
+        ]);
 
-        const appointmentsRes = await fetch("/api/doctors/appointments?limit=5");
-        const appointmentsData = await appointmentsRes.json();
+        const profileData = await profileRes.json();
+        const allAppointmentsData = await allAppointmentsRes.json();
+        const recentData = await recentAppointmentsRes.json();
 
         if (profileData.success) {
           setDoctorName(profileData.data.fullName || "");
-          setStats({
-            totalPatients: profileData.data.patientCountThisMonth || 0,
-            appointmentsToday: 0,
-            appointmentsThisWeek: 0,
-            pendingAppointments: 0,
-            completedAppointments: 0,
-            cancelledAppointments: 0,
-          });
         }
 
-        if (appointmentsData.success) {
-          setRecentAppointments(appointmentsData.data);
-
-          const today = new Date().toISOString().split("T")[0];
-          const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
-
-          const todayAppointments = appointmentsData.data.filter(
-            (a: Appointment) => a.appointmentDate === today
-          );
-          const weekAppointments = appointmentsData.data.filter(
-            (a: Appointment) => a.appointmentDate >= weekAgo
-          );
-
-          setStats((prev) => ({
-            ...prev!,
-            appointmentsToday: todayAppointments.length,
-            appointmentsThisWeek: weekAppointments.length,
-            pendingAppointments: appointmentsData.data.filter((a: Appointment) => a.status === "pending").length,
-            completedAppointments: appointmentsData.data.filter((a: Appointment) => a.status === "completed").length,
-            cancelledAppointments: appointmentsData.data.filter((a: Appointment) => a.status === "cancelled").length,
-          }));
+        if (recentData.success) {
+          setRecentAppointments(recentData.data);
         }
+
+        const allAppts = allAppointmentsData.success ? allAppointmentsData.data : [];
+
+        const today = new Date().toISOString().split("T")[0];
+        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+        const todayAppointments = allAppts.filter(
+          (a: Appointment) => a.appointmentDate === today
+        );
+        const weekAppointments = allAppts.filter(
+          (a: Appointment) => a.appointmentDate >= weekAgo
+        );
+
+        setStats({
+          totalPatients: profileData.success ? (profileData.data.patientCountThisMonth || 0) : 0,
+          appointmentsToday: todayAppointments.length,
+          appointmentsThisWeek: weekAppointments.length,
+          pendingAppointments: allAppts.filter((a: Appointment) => a.status === "pending").length,
+          completedAppointments: allAppts.filter((a: Appointment) => a.status === "completed").length,
+          cancelledAppointments: allAppts.filter((a: Appointment) => a.status === "cancelled").length,
+        });
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -236,8 +235,6 @@ export default function DoctorDashboard() {
             value={loading ? "-" : stats?.appointmentsToday.toString() || "0"}
             icon={<CalendarCheck className="h-5 w-5" />}
             loading={loading}
-            trend="+12%"
-            trendUp={true}
             color="primary"
           />
           <StatsCard
@@ -246,8 +243,6 @@ export default function DoctorDashboard() {
             subtitle="This month"
             icon={<Users className="h-5 w-5" />}
             loading={loading}
-            trend="+8%"
-            trendUp={true}
             color="accent"
           />
           <StatsCard
@@ -264,8 +259,6 @@ export default function DoctorDashboard() {
             subtitle="Appointments"
             icon={<Activity className="h-5 w-5" />}
             loading={loading}
-            trend="+5%"
-            trendUp={true}
             color="success"
           />
         </div>

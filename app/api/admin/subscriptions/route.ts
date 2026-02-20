@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
 import { db } from "@/lib/db";
 import { subscriptions, doctors, users } from "@/lib/db/schema";
-import { eq, desc, count } from "drizzle-orm";
+import { eq, desc, count, sql } from "drizzle-orm";
 import { paginationSchema } from "@/lib/validators";
 
 export const dynamic = "force-dynamic";
@@ -41,10 +41,21 @@ export async function GET(request: NextRequest) {
       .select({ total: count() })
       .from(subscriptions);
 
+    // Get stats
+    const [statsResult] = await db
+      .select({
+        total: count(),
+        active: sql<number>`count(*) filter (where ${subscriptions.status} = 'active')`,
+        trialing: sql<number>`count(*) filter (where ${subscriptions.status} = 'trialing')`,
+        cancelled: sql<number>`count(*) filter (where ${subscriptions.status} = 'cancelled')`,
+      })
+      .from(subscriptions);
+
     // Get subscriptions with doctor info
     const allSubscriptions = await db
       .select({
         id: subscriptions.id,
+        doctorId: subscriptions.doctorId,
         plan: subscriptions.plan,
         status: subscriptions.status,
         stripeSubscriptionId: subscriptions.stripeSubscriptionId,
@@ -52,14 +63,10 @@ export async function GET(request: NextRequest) {
         currentPeriodEnd: subscriptions.currentPeriodEnd,
         cancelAtPeriodEnd: subscriptions.cancelAtPeriodEnd,
         createdAt: subscriptions.createdAt,
-        doctor: {
-          id: doctors.id,
-          fullName: doctors.fullName,
-          slug: doctors.slug,
-        },
-        user: {
-          email: users.email,
-        },
+        doctorFullName: doctors.fullName,
+        doctorSlug: doctors.slug,
+        doctorDbId: doctors.id,
+        userEmail: users.email,
       })
       .from(subscriptions)
       .innerJoin(doctors, eq(subscriptions.doctorId, doctors.id))
@@ -68,9 +75,37 @@ export async function GET(request: NextRequest) {
       .limit(limit)
       .offset(offset);
 
+    // Transform data to match frontend expected shape: doctor.user.email
+    const formattedSubscriptions = allSubscriptions.map((sub) => ({
+      id: sub.id,
+      doctorId: sub.doctorId,
+      plan: sub.plan,
+      status: sub.status,
+      stripeSubscriptionId: sub.stripeSubscriptionId,
+      currentPeriodStart: sub.currentPeriodStart,
+      currentPeriodEnd: sub.currentPeriodEnd,
+      cancelAtPeriodEnd: sub.cancelAtPeriodEnd,
+      createdAt: sub.createdAt,
+      doctor: {
+        id: sub.doctorDbId,
+        fullName: sub.doctorFullName,
+        slug: sub.doctorSlug,
+        user: {
+          email: sub.userEmail,
+        },
+      },
+    }));
+
     return NextResponse.json({
       success: true,
-      data: allSubscriptions,
+      data: formattedSubscriptions,
+      stats: {
+        total: statsResult?.total || 0,
+        active: statsResult?.active || 0,
+        trialing: statsResult?.trialing || 0,
+        cancelled: statsResult?.cancelled || 0,
+        mrr: 0, // Would need Stripe integration for real MRR
+      },
       pagination: {
         page,
         limit,

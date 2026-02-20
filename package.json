@@ -74,6 +74,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.11.16",
     "@types/node-cron": "^3.0.11",

@@ -77,17 +77,32 @@ export function DashboardSidebar({ variant }: DashboardSidebarProps) {
   const { session } = useAuth();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [doctorName, setDoctorName] = useState<string>("");
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Fetch actual doctor name from profile API
+  useEffect(() => {
+    if (variant === "doctor" && mounted) {
+      fetch("/api/doctors/profile")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && data.data?.fullName) {
+            setDoctorName(data.data.fullName);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [variant, mounted]);
 
   const menuItems = variant === "admin" ? adminMenuItems : doctorMenuItems;
   const basePath = variant === "admin" ? "/admin" : "/dashboard";
 
   const userEmail = session?.user?.email || "";
   const userName = variant === "doctor"
-    ? session?.user?.doctorSlug?.replace(/-/g, " ") || userEmail
+    ? doctorName || session?.user?.doctorSlug?.replace(/-/g, " ") || userEmail
     : "Admin";
 
   const getBadgeClasses = (color?: string) => {

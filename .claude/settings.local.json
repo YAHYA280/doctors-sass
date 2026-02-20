@@ -26,7 +26,24 @@
       "Bash(powershell -Command \"Get-ChildItem -Path ''app'', ''components'' -Recurse -Include ''*.tsx'' | ForEach-Object { \\(Get-Content $_FullName -Raw\\) -replace ''border-border/50'', ''border-border'' | Set-Content $_FullName -NoNewline }\")",
       "Bash(powershell -Command:*)",
       "Bash(git rm:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "Bash(python:*)",
+      "Bash(where:*)",
+      "Bash(npx playwright --version)",
+      "Bash(python3:*)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(py -m pip install:*)",
+      "Bash(npx playwright:*)",
+      "Bash(node test_all_routes.mjs:*)",
+      "Bash(node test_admin_login.mjs:*)",
+      "Bash(node test_admin_redirect.mjs:*)",
+      "Bash(node test_all_admin.mjs:*)",
+      "Bash(node test_quick.mjs:*)",
+      "Bash(node test_quick2.mjs:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx kill-port:*)"
     ]
   }
 }

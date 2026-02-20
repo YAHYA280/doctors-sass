@@ -12,7 +12,6 @@ import {
   XCircle,
   BarChart3,
   Activity,
-  ArrowUpRight,
   RefreshCw,
 } from "lucide-react";
 import { DashboardHeader } from "@/components/layouts/dashboard-header";
@@ -84,32 +83,24 @@ export default function AnalyticsPage() {
       value: analytics?.overview.totalAppointments || 0,
       icon: Calendar,
       color: "primary" as const,
-      trend: "+12%",
-      trendUp: true,
     },
     {
       title: "Completed",
       value: analytics?.overview.completedAppointments || 0,
       icon: CheckCircle,
       color: "success" as const,
-      trend: "+8%",
-      trendUp: true,
     },
     {
       title: "Cancelled",
       value: analytics?.overview.cancelledAppointments || 0,
       icon: XCircle,
       color: "destructive" as const,
-      trend: "-5%",
-      trendUp: false,
     },
     {
       title: "Total Patients",
       value: analytics?.overview.totalPatients || 0,
       icon: Users,
       color: "accent" as const,
-      trend: "+15%",
-      trendUp: true,
     },
   ];
 
@@ -187,13 +178,6 @@ export default function AnalyticsPage() {
                   <div className="flex-1">
                     <p className="font-display text-3xl font-bold text-foreground mb-1">{stat.value}</p>
                     <p className="text-sm text-muted-foreground">{stat.title}</p>
-                    <div className={cn(
-                      "inline-flex items-center gap-1 mt-2 text-xs font-medium",
-                      stat.trendUp ? "text-success" : "text-destructive"
-                    )}>
-                      <ArrowUpRight className={cn("h-3.5 w-3.5", !stat.trendUp && "rotate-180")} />
-                      {stat.trend} from last period
-                    </div>
                   </div>
                   <div className={cn(
                     "h-12 w-12 rounded-2xl flex items-center justify-center bg-gradient-to-br border transition-transform duration-300 group-hover:scale-110",

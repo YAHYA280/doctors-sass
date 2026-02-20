@@ -43,7 +43,19 @@ function LoginForm() {
         toast.error(result.error);
       } else {
         toast.success("Login successful!");
-        router.push(callbackUrl);
+        // Fetch session to determine user role for proper redirect
+        const { getSession } = await import("next-auth/react");
+        const session = await getSession();
+        const userRole = (session?.user as any)?.role;
+
+        if (callbackUrl !== "/dashboard") {
+          // If an explicit callbackUrl was provided, use it
+          router.push(callbackUrl);
+        } else if (userRole === "admin") {
+          router.push("/admin");
+        } else {
+          router.push("/dashboard");
+        }
         router.refresh();
       }
     } catch (error) {

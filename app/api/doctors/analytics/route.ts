@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
         total: count(),
         completed: sql<number>`count(*) filter (where ${appointments.status} = 'completed')`,
         cancelled: sql<number>`count(*) filter (where ${appointments.status} = 'cancelled')`,
-        noShow: sql<number>`count(*) filter (where ${appointments.status} = 'no_show')`,
+        pending: sql<number>`count(*) filter (where ${appointments.status} = 'pending')`,
       })
       .from(appointments)
       .where(
@@ -62,8 +62,7 @@ export async function GET(request: NextRequest) {
 
     // Calculate completion rate
     const totalNonPending = (appointmentStats?.completed || 0) +
-                           (appointmentStats?.cancelled || 0) +
-                           (appointmentStats?.noShow || 0);
+                           (appointmentStats?.cancelled || 0);
     const completionRate = totalNonPending > 0
       ? ((appointmentStats?.completed || 0) / totalNonPending) * 100
       : 0;
@@ -169,7 +168,7 @@ export async function GET(request: NextRequest) {
         totalAppointments: appointmentStats?.total || 0,
         completedAppointments: appointmentStats?.completed || 0,
         cancelledAppointments: appointmentStats?.cancelled || 0,
-        noShowAppointments: appointmentStats?.noShow || 0,
+        pendingAppointments: appointmentStats?.pending || 0,
         totalPatients: patientStats?.total || 0,
         newPatientsThisMonth: patientStats?.newThisMonth || 0,
         averageAppointmentsPerDay: days > 0 ? (appointmentStats?.total || 0) / days : 0,

@@ -4,8 +4,8 @@ import { authOptions } from "@/lib/auth/config";
 import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
-import { users, doctors, appointments, subscriptions, supportTickets } from "@/lib/db/schema";
-import { count, eq, gte, and, sql } from "drizzle-orm";
+import { users, doctors, appointments, subscriptions, supportTickets, patients } from "@/lib/db/schema";
+import { count, eq, gte, and, sql, desc } from "drizzle-orm";
 import { getMonthlyRevenue, getRevenueByMonth } from "@/services/stripe";
 
 export async function GET(request: NextRequest) {
@@ -59,7 +59,9 @@ export async function GET(request: NextRequest) {
     const userGrowth =
       newUsersLastMonth > 0
         ? Math.round(((newUsersThisMonth - newUsersLastMonth) / newUsersLastMonth) * 100)
-        : 100;
+        : newUsersThisMonth > 0
+          ? 100
+          : 0;
 
     // Get total appointments
     const [{ totalAppointments }] = await db
@@ -92,6 +94,40 @@ export async function GET(request: NextRequest) {
       console.log("Stripe not configured, skipping revenue data");
     }
 
+    // Get total patients
+    const [{ totalPatients }] = await db
+      .select({ totalPatients: count() })
+      .from(patients);
+
+    // Get top doctors by appointment count
+    const topDoctors = await db
+      .select({
+        id: doctors.id,
+        name: doctors.fullName,
+        appointmentCount: sql<number>`count(${appointments.id})`,
+      })
+      .from(doctors)
+      .leftJoin(appointments, eq(doctors.id, appointments.doctorId))
+      .groupBy(doctors.id, doctors.fullName)
+      .orderBy(desc(sql`count(${appointments.id})`))
+      .limit(5);
+
+    // Get patient counts per doctor for topDoctors
+    const topDoctorsWithPatients = await Promise.all(
+      topDoctors.map(async (doc) => {
+        const [patientCount] = await db
+          .select({ count: count() })
+          .from(patients)
+          .where(eq(patients.createdByDoctorId, doc.id));
+        return {
+          id: doc.id,
+          name: doc.name,
+          appointments: doc.appointmentCount,
+          patients: patientCount?.count || 0,
+        };
+      })
+    );
+
     // Get user registration trends (last 7 days)
     const userTrends = await db
       .select({
@@ -121,13 +157,16 @@ export async function GET(request: NextRequest) {
           activeSubscriptions,
           monthlyRevenue,
           totalAppointments,
+          totalPatients,
           openTickets,
           userGrowth,
+          newUsersThisMonth: newUsersThisMonth,
         },
         subscriptionBreakdown,
         revenueHistory,
         userTrends,
         appointmentStats,
+        topDoctors: topDoctorsWithPatients,
       },
     });
   } catch (error) {
